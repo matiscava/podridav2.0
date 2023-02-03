@@ -14,7 +14,6 @@ export default class MistakeMadeDaoMongo extends MongoContainer {
   async createMistakeMade (element) {
     try {
       if(parseInt(element.id) !== 0){
-        console.log("aca");
         const elementExist = await this.getById(element.id);
         if(elementExist){
           const { n, nModified } = await this.collection.updateOne({ _id: element.id }, {
@@ -22,7 +21,6 @@ export default class MistakeMadeDaoMongo extends MongoContainer {
           })
       }
       } else {
-        console.log("allaa");
 
         const document = new this.collection(element);
         const response = await document.save();
