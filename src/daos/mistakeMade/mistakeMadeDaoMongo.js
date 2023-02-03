@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import MongoContainer from '../../containers/MongoContainer.js';
+import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 
 export default class MistakeMadeDaoMongo extends MongoContainer {
   constructor(){
@@ -12,8 +13,8 @@ export default class MistakeMadeDaoMongo extends MongoContainer {
   }
   async createMistakeMade (element) {
     try {
-      const list = await this.getAll();
-      if(element.id !== 0){
+      if(parseInt(element.id) !== 0){
+        console.log("aca");
         const elementExist = await this.getById(element.id);
         if(elementExist){
           const { n, nModified } = await this.collection.updateOne({ _id: element.id }, {
@@ -21,8 +22,12 @@ export default class MistakeMadeDaoMongo extends MongoContainer {
           })
       }
       } else {
+        console.log("allaa");
+
         const document = new this.collection(element);
-        await document.save();
+        const response = await document.save();
+        const result = renameField(asPOJO(response), '_id', 'id')  
+        return result;
       }
     } catch (err) {
       let message = err || "Ocurrio un error";
