@@ -1,0 +1,15 @@
+<%- include('./components/head.ejs') %> 
+<main>
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>App para anotar los puntos de La Podrida</p>
+    <div class="button-container">
+      <form action="/game/new" method="post" id="form-one-button">
+        <input class="menu-button" type="submit" value="Juego Nuevo">
+      </form>
+      <a class="menu-button" href="/game/getAll">Juegos Guardados</a>
+      <a class="menu-button" href="/rules">Reglas</a>
+    </div>
+  </div>
+</main>
+<%- include('./components/footer.ejs')  %> 

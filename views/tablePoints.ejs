@@ -1,0 +1,58 @@
+<%- include('./components/head.ejs') %>
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <button id="btn-export-to-excel">Exportar a Excel <span class="icon-file-excel"></span></button>
+    <div class="table-container">
+      <table class="pointsTable" id="points-table">
+        <thead>
+          <tr>
+            <th></th>
+            <% playerList.forEach( p => { %>
+              <th scope="col" colspan="3"><%= p.name %></th>  
+            <% }) %>  
+          </tr>
+          <tr>
+            <th>Mano</th>
+            <% playerList.forEach( p => { %>
+              <th>P</th>  
+              <th>Ll</th>  
+              <th>Pts</th>  
+            <% }) %>  
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i =0; i <= 22; i++){ %>
+            <% if (i==22) {%> 
+              <tr class="mistake-row">
+                <th scope="row">Mistake</th>
+                <% playerList.forEach( p => { %>
+                  <td scope="col" colspan="3"><%=p.mistakePoints%></td>  
+                <% }) %>  
+              </tr>
+            <% } %>
+            <% if (i==22) {%> 
+              <tr>
+                <th scope="row">Puntos</th>
+                <% playerList.forEach( p => { %>
+                  <td scope="col" colspan="3"><%=p.finalPoints%></td>  
+                <% }) %>  
+              </tr>
+            <% } %>
+            <% if (i<21) {%> 
+              <tr>
+                <th scope="row"><%=i+1%></th>
+                <% playerList.forEach( p => { %>
+                  <td scope="col"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  
+                  <td scope="col"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].take%><%}%></th>  
+                  <td scope="col"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].points%><%}%></th>  
+                <% }) %>  
+              </tr>
+            <% } %>
+          <% } %>  
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main> 
+<%- include('./components/footer.ejs') %> 

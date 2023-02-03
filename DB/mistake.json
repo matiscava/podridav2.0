@@ -1,0 +1,22 @@
+[
+  {
+    "mistake": "No repartio cuando debia",
+    "points": "10",
+    "id": "16e470e13d0d74d1886a00c459470d7d"
+  },
+  {
+    "mistake": "Repartio mal",
+    "points": "10",
+    "id": "c7900405e1048fe193b197be98a7cd0b"
+  },
+  {
+    "mistake": "Repartio cuando no debia",
+    "points": "10",
+    "id": "5b15b03e62f7cf8aeaae40e59f326a45"
+  },
+  {
+    "mistake": "Jugo Mal",
+    "points": "20",
+    "id": "8ee4ff5f207d9e15fe5c1c84b127d1f4" 
+  }
+]

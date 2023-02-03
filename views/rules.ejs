@@ -1,0 +1,35 @@
+<%- include('./components/head.ejs') %> 
+<main>
+  <div class="container">
+    <h2><%= title %></h1>
+    <p>La podrida es un juego de naipes, que se juega con cartas de poker, consta de 21 manos, se reparte hacia la izquierda. Y se juega de a 7 jugadores, aunque se puede jugar de menos, pero no es lo recomendable.</p>
+    <h3>Modalidad de juego:</h3>
+    <p>El juego se divide en 3 bloques de 7 manos, en el primer bloque se inicia repartiendo 1 carta a cada jugador, al terminar la primera mano se juega otra con 2 cartas, y se va sumando una carta por mano hasta llegar a 7. Luego se juegan 7 manos con 7 cartas y el último bloque se comienza repartiendo 7 cartas a cada jugador, y se va restando una carta por mano hasta llegar a 1.</p>
+    <h3>Bases de juego:</h3>
+    <p>El primer jugador de cada mano inicia el juego con una carta que tenga en su mano, de su elección. El palo que juegue ese jugador será el que dominará la mano, el resto de los jugadores deben jugar si o si, ese mismo palo en caso de no poseerlo deben jugar un triunfo (más adelante se explicara su uso), y de no tener ninguno de esas dos opciones, puede jugar cualquier carta.</p>
+    <p>Cada jugador está obligado a matar la carta más alta que esté en juego, respetando el palo, de no poder matar deberá jugar el mismo palo, de no tener el palo deberá jugar el triunfo, obligado a matar si es que ya se jugó un triunfo anteriormente, en caso de no poder matar deberá jugar un triunfo y si no posee el palo ni tiene triunfo, recién ahí podrá jugar cualquier carta.</p>
+    <h3>Triunfo:</h3>
+    <p>Tanto en el primer bloque como en el último, al finalizar de repartir las cartas a cada jugador, se da vuelta una última carta que es considerada como el triunfo. Durante esa mano el palo del triunfo pasa a ser el que mata al resto de los palos. Pero solo puede utilizarse cuando:</p>
+      <ul>
+        <li>La mano haya sido iniciada con el palo del triunfo. El famoso "Larry".</li>
+        <li>No posea el palo de inicio de la mano.</li>
+      </ul>
+    <h3>A tener en cuenta:</h3>
+    <p>En caso de que ya se haya jugado el triunfo, y yo tenga un triunfo y una carta con el palo, debo jugar el palo de la mano.</p>
+    <p>Si puedo matar con dos cartas, puedo elegir con cuál matar, sin obligación de usar la más alta.</p>
+    <p>Si no llego a matar, pero tengo dos cartas del mismo palo, puedo elegir cuál de las dos usar.</p>
+    <h3>Predicción:</h3>
+    <p>Antes de iniciar cada mano, los jugadores podrán ver sus cartas y con esa información deberán predecir cuantas rondas ganarán en la mano. La predicción se da en el sentido de juego, comenzando con la mano y terminando con el que repartió. El mínimo a pedir es 0 y el máximo es la cantidad de cartas que se juegan en esa mano, por jugador. La única condición es que el que repartió al ser el último en predecir, no puede igualar el total de pedidas con la cantidad de cartas en juego. Por ejemplo: si cada jugador tiene 4 cartas y hasta el que repartió se han pedido 3 predicciones en total, el que repartió no puede decir que levantará 1 carta, puede pedir 0,2,3 o 4.</p>
+    <h3>Puntuación:</h3>
+    <p>Una vez terminada la mano se comparan la cantidad de cartas pedidas con la cantidad de veces que levantó cada jugador. Si igualó la cantidad, suma 10 puntos, y por cada vez que levantó suma 3 puntos más, en caso de haber diferencia entre la predicción y las que levantó se restarán 3 puntos por cada diferencia. Por ejemplo: si pidió 4 y se lleva 2, resta 6 puntos.</p>
+    <h3>Mistake:</h3>
+    <p>Hay diferentes formas de descontar puntos por penalidades:</p>
+    <ul>
+      <li>Repartir mal, ya sea cartas de más o de menos, u olvidar cartas cuando se juntó el mazo.</li>
+      <li>Repartir cuando no me toca, resta 10 puntos.</li>
+      <li>No repartir cuando me toca, resta 10 puntos.</li>
+      <li>Jugar mal: Si yo tengo el palo de la mano y juego un triunfo u otro palo, o puedo matar, pero juego una más baja o viceversa. Resta 20 puntos y se juega toda la mano de nuevo.</li>
+    </ul>
+  </div>
+</main>
+<%- include('./components/footer.ejs')  %> 

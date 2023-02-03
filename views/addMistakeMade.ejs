@@ -1,0 +1,33 @@
+<%- include('./components/head.ejs')  %>
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <form action="/game/<%=gameId %>/addMistake" method="post" class="form-input-text">
+      <div class="label-container">
+        <label for="player-select">¿Quíen hizo el mistake?:</label>
+        <select name="playerId" id="player-select">
+          <% playerList.forEach(p => { %>
+            <option value="<%= p.id %>" <% if(typeof mistake != "undefined" && p.id == mistake.playerId) {%> selected <%}%>><%= p.name %></option>
+          <% }) %>  
+        </select>
+      </div>
+      <div class="label-container">
+        <label for="mistake-select">¿Quíen hizo el mistake?:</label>
+        <select name="mistakeId" id="mistake-select">
+          <% mistakeList.forEach(m => { %>
+            <option value="<%= m.id %>" <% if(typeof mistake != "undefined" && m.id == mistake.mistakeId) {%> selected <%}%>><%= m.mistake %> resta <%= m.points %> puntos</option>
+          <% }) %>  
+        </select>
+      </div>
+      <div class="label-container">
+        <label for="">¿Se reinicia la mano?</label>
+        <input type="radio" name="restartHand" id="restart-true" value=true><label for="restart-true">Si</label>
+        <input type="radio" name="restartHand" id="restart-false" value=false checked><label for="restart-false">No</label>
+      </div>
+      <div class="label-container"><label for="hand-input">Mano: </label><input type="number" name="handNumber" min="1" max="21" id="hand-input" value="<% if(typeof mistake != "undefined"){  %><%= mistake.handNumber %><% }else{ %><%=handNumber%><% } %>" required></div>
+      <input type="hidden" name="id" value="<% if(typeof mistake != "undefined"){  %><%= mistake.id %><% }else{ %>0<% } %>">
+      <input type="submit" value="Cargar mistake" class="menu-button">
+    </form>
+  </div>
+</main> 
+<%- include('./components/footer.ejs')  %> 

@@ -1,0 +1,42 @@
+<%- include('./components/head.ejs')  %>
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <div class="table-container">
+      <table class="handPointsTable">
+        <thead>
+          <tr>
+            <th>Mistake</th>
+            <th>Puntos</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% mistakeList.forEach( m => { %>
+            <tr>
+              <th><%= m.mistake %></th>
+              <th><%= m.points %></th>
+              <th>
+                <div style="display: flex; justify-content: space-evenly; align-items: center;">
+                  <button type="button" class="btn btn-warning">
+                    <a class="text-white" href="/mistake/create/<%= m.id %>">
+                        Editar
+                    </a>
+                  </button>
+                  <form style="margin: 0px; margin-left: 5px" action="/mistake/delete/<%= m.id %>" method="post">
+                    <button class="text-white btn btn-danger" type="submit">
+                        Eliminar
+                    </button>
+                    <input type="hidden" name="_method" value="DELETE">
+                  </form>
+                </div>
+              </th>
+            </tr>  
+          <% }) %>  
+        </tbody>
+      </table>
+    </div>
+    <a class="menu-button" href="/mistake/create">Crear nuevo Mistake</a>
+  </div>
+</main> 
+<%- include('./components/footer.ejs')  %> 

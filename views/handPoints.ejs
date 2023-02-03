@@ -1,0 +1,36 @@
+<%- include("./components/head.ejs")%> 
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <div class="table-container">
+      <table class="handPointsTable">
+        <thead>
+          <tr>
+            <th scope="col">Jugador</th>
+            <th scope="col">Pidió</th>
+            <th scope="col">Se Llevó</th>
+            <th scope="col">Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% playerList.forEach( p => { %>
+            <tr>
+              <th><%= p.name %></th>
+              <th><%= p.predict %></th>
+              <th><%= p.take %></th>
+              <th><%= p.points %></th>
+            </tr>
+          <% }) %>  
+        </tbody>
+      </table>
+    </div>
+    <form action="/game/<%=gameId%>/endHand" method="post" id="formEndHand">
+      <div class="formButtons">
+        <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
+        <input class="menu-button" type="button" onclick='location.href=`/game/<%=gameId  %>/taken`' value="Editar Llevadas">
+        <input class="menu-button" type="submit" value="Terminar Mano">
+      </div>
+    </form>
+  </div>
+</main>
+<%- include ("./components/footer.ejs") %> 

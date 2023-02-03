@@ -1,0 +1,30 @@
+<header>
+  <div class="container header">
+    <nav class="nav-menu">
+      <ul>
+        <li class="nav-li">
+          <a href="/" class="menu">Home</a>
+        </li>
+        <li class="nav-li">
+          <a href="/rules" class="menu">Reglas</a>
+        </li>
+        <% if(typeof gameId != "undefined"){  %> 
+          <li class="nav-li">
+            <a href="/game/<%= gameId %>" class="menu">Juego</a>
+          </li>
+          <li class="nav-li">
+            <a href="/game/<%= gameId %>/tablePoints" class="menu">Puntos del Juego</a>
+          </li>
+        <% } %> 
+        <li class="nav-li"><a href="/game/getAll">Juegos Guardados</a></li>
+        <li class="nav-li"><a href="/mistake/getAll">Mistake</a></li>
+        <% if(typeof gameId != "undefined"){  %> 
+          <li class="nav-li">
+            <a href="/game/<%= gameId %>/mistakeList" class="menu">Editar Mistakes</a>
+          </li>
+        <% } %> 
+      </ul>
+    </nav>
+  </div>
+</header>
+<%- include("./menuBurguer.ejs") %>

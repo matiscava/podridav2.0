@@ -1,0 +1,29 @@
+<%- include('./components/head.ejs') %> 
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <p class="problem none" id="problemText"></p>
+    <form action="/game/taken" method="post" class="formCards">
+      <% playerList.forEach( (p,index) => { %>
+        <div class="formElement">
+          <label class="labelName" for="[players][<%=index%>][take]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió <%= p.predict %>, cuantas se llevó:</label>
+          <% for (let i = 0; i<=cardLimit;i++) {%>
+            <input type="radio" class="radioTake none" name="[players][<%=index%>][take]" id="take-<%=p.id%>-<%=i%>" value="<%=i%>" <% if(i==p.take) { %> checked<% } %> >
+            <label for="take-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
+          <% } %>  
+          <input type="hidden" name="[players][<%=index%>][handId]" value="<%= p.handId %>">
+        </div>
+      <% }) %>
+      <input type="hidden" name="gameId" value="<%= gameId %>">
+      <div class="formButtons">
+        <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
+        <input class="menu-button" type="button" onclick='location.href=`/game/<%=gameId%>/predict`' value="Editar pedidas">
+        <input class="menu-button" type="submit" value="Calcular Puntos" disabled>
+      </div>
+    </form>
+  </div>
+</main>
+<script>
+    const cardLimit = <%-JSON.stringify(cardLimit)%>;
+</script>
+<%- include('./components/footer.ejs')  %> 

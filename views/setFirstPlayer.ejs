@@ -1,0 +1,17 @@
+<%- include('./components/head.ejs') %> 
+<main>
+  <div class="container">
+    <h2><%= title %></h2>
+    <form action="/game/setFirstPlayer" method="post">
+      <label for="firstPlayer">Seleccione el primer jugador que será mano:</label>
+      <select name="playerId" id="firstPlayer">
+        <% playerList.forEach( p => { %>
+          <option value="<%= p.id %>"><%= p.name %></option>
+        <% }); %>  
+      </select>
+      <input type="hidden" name="gameId" value="<%= gameId %>">
+      <input type="submit" value="Iniciar Juego">
+    </form>
+  </div>
+</main>
+<%- include('./components/footer.ejs')  %> 

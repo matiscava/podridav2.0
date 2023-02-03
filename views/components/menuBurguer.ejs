@@ -1,0 +1,20 @@
+<button class="panel-btn hamburger hamburger--vortex" type="button">
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
+<aside class="panel panel-menu">
+  <nav class="menu-responsive">
+      <a href="/" class="menu">Home</a>
+      <a href="/rules" class="menu">Reglas</a>
+    <% if(typeof gameId != "undefined"){  %> 
+        <a href="/game/<%= gameId %>" class="menu">Juego</a>
+        <a href="/game/<%= gameId %>/tablePoints" class="menu">Puntos del Juego</a>
+    <% } %> 
+    <a href="/game/getAll">Juegos Guardados</a>
+    <a href="/mistake/getAll">Mistake</a>
+    <% if(typeof gameId != "undefined"){  %> 
+        <a href="/game/<%= gameId %>/mistakeList" class="menu">Editar Mistakes</a>
+    <% } %> 
+  </nav>  
+</aside>
