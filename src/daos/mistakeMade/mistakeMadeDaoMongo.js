@@ -13,13 +13,15 @@ export default class MistakeMadeDaoMongo extends MongoContainer {
   async createMistakeMade (element) {
     try {
       const list = await this.getAll();
-      const elementExist = await this.getById(element.id);
-      if(elementExist){
-        const { n, nModified } = await this.collection.updateOne({ _id: element.id }, {
-          $set: element
-        })
+      if(element.id !== 0){
+        const elementExist = await this.getById(element.id);
+        if(elementExist){
+          const { n, nModified } = await this.collection.updateOne({ _id: element.id }, {
+            $set: element
+          })
+      }
       } else {
-        const document = new this.collection(hand);
+        const document = new this.collection(element);
         await document.save();
       }
     } catch (err) {

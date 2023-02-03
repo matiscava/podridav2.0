@@ -37,7 +37,6 @@ export default class HandDaoFile extends FileContainer {
       const h = await this.getById(hand.id);
       h.take = parseInt(hand.take);
       let points;
-      console.log("h.take", typeof h.take,"h.predict", typeof h.predict,"points: ", typeof points);
       if ( h.predict === h.take)
       {
         points = 10 + (h.take * 3);

@@ -14,13 +14,15 @@ export default class HandDaoMongo extends MongoContainer {
   }
   async createHand(hand){
     try {
-      const handList = await this.getAll();
-      if(hand.id!== 0){
+      if(parseInt(hand.id)!== 0){
         const handExists = await this.getById(hand.id);
-        const { n, nModified } = await this.collection.updateOne({ _id: hand.id }, {
-          $set: hand
-        })
-        if (n == 0 || nModified == 0) throw new Error(`Elemento con el id: '${hand.id}' no fue encontrado`);
+        if(handExists){
+          const { n, nModified } = await this.collection.updateOne({ _id: hand.id }, {
+            $set: hand
+          })
+          if (n == 0 || nModified == 0) throw new Error(`Elemento con el id: '${hand.id}' no fue encontrado`);
+        }
+        return hand.id;
       } else {
         const document = new this.collection(hand);
         const response = await document.save();

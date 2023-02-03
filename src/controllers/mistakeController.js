@@ -35,7 +35,7 @@ mistakeController.getCreateForm = async (req, res) => {
 
 mistakeController.create = async (req, res) => {
   try {
-    await mistakeDao.create(req.body);
+    await mistakeDao.createMistake(req.body);
     res.redirect('/mistake/getAll')
   } catch (err) {
     const message = err.message || "Ocurrio un error";

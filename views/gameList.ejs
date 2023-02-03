@@ -2,16 +2,17 @@
 <main>
   <div class="container">
     <h2><%= title %></h2>
-    <table class="gameListTable">
-      <thead>
-        <tr>
+    <div class="table-container">
+      <table class="gameListTable">
+        <thead>
+          <tr>
           <th>Jugadores</th>
           <th>Fecha</th>
           <th>Mano</th>
           <th style="text-align: center;">Acción</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <% if (!gameList.length){ %>
           <th colspan="4"> No hay juegos guardados</th>
         <% }else{ %>  
@@ -22,24 +23,25 @@
               <th><%= g.handNumber%></th>
               <td>
                 <div style="display: flex; justify-content: space-evenly; align-items: center;">
-                  <button type="button" class="btn btn-warning">
-                    <a class="text-white" href="/game/<%= g.id %>">
-                        Cargar
+                  <button type="button" class="btn-load">
+                    <a href="/game/<%= g.id %>">
+                      Cargar
                     </a>
-                </button>
-                <form style="margin: 0px; margin-left: 5px" action="/game/delete/<%= g.id %>" method="post">
-                  <button class="text-white btn btn-danger" type="submit">
-                      Eliminar
                   </button>
-                  <input type="hidden" name="_method" value="DELETE">
-              </form>
+                  <form style="margin: 0px; margin-left: 5px" action="/game/delete/<%= g.id %>" method="post">
+                    <button class="btn-delete" type="submit">
+                      <span class="icon-bin2"></span>
+                    </button>
+                    <input type="hidden" name="_method" value="DELETE">
+                  </form>
                 </div>
               </td>
             </tr>
           <% }) %>   
         <% } %> 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
 <%- include('./components/footer.ejs')  %> 

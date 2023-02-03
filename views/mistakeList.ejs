@@ -18,14 +18,14 @@
               <th><%= m.points %></th>
               <th>
                 <div style="display: flex; justify-content: space-evenly; align-items: center;">
-                  <button type="button" class="btn btn-warning">
-                    <a class="text-white" href="/mistake/create/<%= m.id %>">
-                        Editar
+                  <button type="button" class="btn-edit">
+                    <a href="/mistake/create/<%= m.id %>">
+                      <span class="icon-pencil"></span>
                     </a>
                   </button>
                   <form style="margin: 0px; margin-left: 5px" action="/mistake/delete/<%= m.id %>" method="post">
-                    <button class="text-white btn btn-danger" type="submit">
-                        Eliminar
+                    <button class="btn-delete" type="submit">
+                      <span class="icon-bin2"></span>
                     </button>
                     <input type="hidden" name="_method" value="DELETE">
                   </form>
