@@ -15,8 +15,8 @@ export default class HandDaoMongo extends MongoContainer {
   async createHand(hand){
     try {
       const handList = await this.getAll();
-      const handExists = await this.getById(hand.id);
-      if(handExists) {
+      if(hand.id!== 0){
+        const handExists = await this.getById(hand.id);
         const { n, nModified } = await this.collection.updateOne({ _id: hand.id }, {
           $set: hand
         })

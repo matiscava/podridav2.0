@@ -328,7 +328,7 @@ gameController.getTablePoints = async (req,res) => {
       }
       handList.sort((a,b) => {a.handNumber - b.handNumber});
       for (let i = 0; i < handList.length; i++) {
-        finalPoints += handList[i].points;
+        finalPoints += parseInt(handList[i].points);
         handList[i].points = finalPoints;
       }
       finalPoints -= mistakePoints;

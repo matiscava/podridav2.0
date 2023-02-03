@@ -38,7 +38,7 @@ export default class MongoContainer {
 
   async getById(id) {
     try {
-      const objID = typeof id === 'String' ? id : new ObjectId(id);
+      const objID = typeof id === 'string' ? id : new ObjectId(id);
       let data = await this.collection.find( {'_id': objID },{__v:0} )
       if (data.length === 0) {
         return null;

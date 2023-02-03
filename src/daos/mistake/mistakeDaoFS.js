@@ -11,7 +11,6 @@ export default class MistakeDaoFile extends FileContainer {
     try {
       const list = await this.getAll();
       const elementIndex = list.findIndex(el => el.id === element.id);
-      console.log(element, elementIndex);
       if(elementIndex === -1){
         element.id = crypto.randomBytes(16).toString("hex");
         list.push(element);

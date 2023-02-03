@@ -24,7 +24,6 @@ mistakeController.getCreateForm = async (req, res) => {
   try {
     let mistake;
     if( req.params.id ) mistake = await mistakeDao.getById(req.params.id) 
-    if( req.params.id ) console.log("hola"); 
     res.render(path.join(process.cwd(),'/views/mistakeForm.ejs'), {title:"Lista de Mistake", mistake});
 
   } catch (err) {
