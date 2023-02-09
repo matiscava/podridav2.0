@@ -400,7 +400,7 @@ p{
 .radioPredict + label,
 .radioTake + label{
   font-weight: 600;
-  color: var(--second-color);
+  color: var(--main-color);
   cursor: pointer;
   padding: 4px 8px;
   transition: .3s ease-in-out;
