@@ -40,7 +40,7 @@
               </tr>
             <% } %>
             <% if (i<21) {%> 
-              <tr>
+              <tr <% if (i>6 && i<14) {%>class="tr-middle"<%}%>>
                 <th scope="row"><%=i+1%></th>
                 <% playerList.forEach( p => { %>
                   <td scope="col"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  

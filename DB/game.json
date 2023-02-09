@@ -16,9 +16,9 @@
   },
   {
     "id": "48ebd6f1f22f9c8bee856e43df86fd3d",
-    "handNumber": 12,
+    "handNumber": 22,
     "timestamp": 1675175500565,
-    "viewName": "predict",
+    "viewName": "endGame",
     "playerList": [
       "ffcf77694bd3d4c167252c51933538f3",
       "7e00cca2dce313c8a4122bcc1f215d2b",
@@ -30,18 +30,18 @@
     ]
   },
   {
-    "id": "9e7c3c916e6e5ab6dbad6f4de7c4fadd",
-    "handNumber": 3,
-    "timestamp": 1675277200826,
-    "viewName": "predict",
+    "id": "3a11cc524da81112d26639d8121bb450",
+    "handNumber": 2,
+    "timestamp": 1675964928353,
+    "viewName": "taken",
     "playerList": [
-      "a8ac0834817d7a256302f02b33dd1ec4",
-      "aa55f6e7e0540f579ed0d7ce47f8093c",
-      "b542b1ea6082787c502f76dc469599b0",
-      "3ccb68156d2b7255af02962a70e0c4fe",
-      "e4f33f30848e2aa4f807203cdcb0d411",
-      "5bc1866cad29a6ce1652fdfdb136c4d2",
-      "b52abebfdbe4d44e55b642380285b9ef"
+      "0780bb53371ef92cf8d0f8e6e5345686",
+      "01462608005b8f557bad7450fc136f7f",
+      "d914e40b23db26d8e670eaa1817624b6",
+      "f7eca9c20938851588ef8879be24d087",
+      "8ff06c128c9db49be8b385f0ef864258",
+      "0b7428258f72a835b997fdda7037aa56",
+      "4907b6e97bf6b796674b08f2ab4beb43"
     ]
   }
 ]

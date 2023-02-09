@@ -7,13 +7,15 @@
       <% playerList.forEach( (p,index) => { %>
         <div class="formElement">
         <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió:</label>
+        <div class="input-container">
           <% for (let i = 0; i<=cardLimit;i++) {%>
             <input type="radio" class="radioPredict none" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if(i==p.predict) { %> checked<% } %> >
             <label for="predict-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
-          <% } %>  
-          <input type="hidden" name="[players][<%=index%>][playerId]" value="<%= p.id %>">
-          <input type="hidden" name="[players][<%=index%>][handId]" value="<%= p.handId %>">
-          </div>
+            <% } %>  
+        </div>
+        <input type="hidden" name="[players][<%=index%>][playerId]" value="<%= p.id %>">
+        <input type="hidden" name="[players][<%=index%>][handId]" value="<%= p.handId %>">
+        </div>
       <% }) %>
       <input type="hidden" name="gameId" value="<%= gameId %>">
       <input type="submit" class="menu-button" value="Iniciar la Mano">

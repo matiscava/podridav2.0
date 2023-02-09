@@ -1,5 +1,6 @@
 :root{
   --main-color: #a9a9a9;
+  --body-color: #e4e9c6;
   --second-color: #f8eaea;
   --third-color: rgb(78, 74, 128);
   --menu-color: #6786af;
@@ -103,7 +104,7 @@ html {
 body{
   min-height: 100vh;
   margin: 0;
-  background-color: var(--main-color);
+  background-color: var(--body-color);
   overflow-x: hidden;
 }
 
@@ -113,7 +114,6 @@ header {
   text-align: center;
   background-color: var(--menu-color);
   box-shadow:  0px -9px 20px 6px var(--second-color);
-  /* border-bottom: 2px solid var(--second-color); */
 }
 
 h1 {
@@ -156,8 +156,8 @@ p{
 }
 
 @media screen and (max-width: 800px) {
-  .container {
-    width: 95%;
+  main {
+    width: 100vw;
   }
 }
 
@@ -176,11 +176,11 @@ p{
   opacity: 0;
   transition: transform .5s ease, opacity .5s ease;
   /* De arriba */
-  /* transform: translate(0,-100%); */
+  transform: translate(0,-100%);
   /* De abajo */
   /* transform: translate(0,100%); */
   /* De derecha */
-  transform: translate(100%,0);
+  /* transform: translate(100%,0); */
   /* De izquierda */
   /* transform: translate(-100%,0); */
 }
@@ -355,7 +355,7 @@ p{
 
 @media screen and (max-width: 1050px) {
   .panel-btn {
-    display: flex;
+    display: flex;  
   }
   .nav-menu{
     display: none;
@@ -420,6 +420,19 @@ p{
   border-color: rgb(91, 168, 117);
 } 
 
+@media screen and (max-width: 1000px) {
+  .formCards .formElement {
+    flex-direction: column;
+  }
+  .input-container {
+    margin-top: .5rem;
+  }
+  .formButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 /* TABLE POINTS HAND */
 
 .handPointsTable,
@@ -430,7 +443,7 @@ p{
   margin: 1rem auto;
   font-size: 0.9em;
   font-family: sans-serif;
-  min-width: 400px;
+  /* min-width: 400px; */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 table td,
@@ -463,7 +476,6 @@ table th{
   border-collapse: collapse;
 }
 .pointsTable thead {
-  color: var(--main-color);
   background-color: rgb(75, 245, 140);
 }
 
@@ -473,6 +485,14 @@ table th{
 .pointsTable tbody tr:nth-child(even) {
   background-color: rgb(219, 219, 200);
 }
+
+.pointsTable tbody tr.tr-middle {
+  background-color: #cad6e9;
+}
+.pointsTable tbody tr.tr-middle:nth-child(even) {
+  background-color: #8599b9;
+}
+
 .pointsTable tbody tr.mistake-row {
   background-color: #f3938c;
   color: #a92a21;
@@ -561,8 +581,8 @@ table th{
 .form-input-text{
   display: flex;
   flex-direction: column;
-  width: 60%;
-  min-width: 400px;
+  width: 100%;
+  /* min-width: 400px; */
   margin: 0 auto;
 }
 
@@ -590,14 +610,16 @@ table th{
   align-items: center;
 }
 
+
+
 #form-one-button  {
-  margin: auto;
+  margin: 0;
 }
 
 .menu-button{
   background-color: transparent;
   font-size: 1.5rem;
-  color: white;
+  color: #9d7a7a;
   cursor: pointer;
   text-decoration: none;
   border: none;
@@ -622,4 +644,41 @@ table th{
   color: #dd7169;
   text-shadow: 0 0 11px #dd7169;
 
+}
+
+@media screen and (max-width: 1000px) {
+  #home{
+    min-height: 100vh;
+  }
+  .button-home-container {
+    min-height: auto;
+    margin-top: 3rem;
+  }
+  .button-home-container > a{
+    margin-top: 2rem;
+  }
+  .form-input-text{
+    max-width: 90vw;
+  }
+  
+  .form-input-text .label-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .form-input-text .label-container label {
+    margin-bottom: 5px;
+  }
+
+  .form-input-text .label-container input[type="text"] {
+    width: 100%;
+    margin-left: 0;
+
+  }
+
+  .form-input-text .label-container select,
+  .form-input-text .label-container input[type="number"],
+  .form-input-text .label-container input[type="text"] {
+    flex-grow: 0;
+  }
+ 
 }

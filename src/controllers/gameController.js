@@ -9,11 +9,6 @@ const gameController = () => {};
 
 const { daos } = Singleton.getInstance();
 const {gameDao, playerDao, handDao, mistakeDao, mistakeMadeDao } = daos;
-// const gameDao = new GameDaoFile;
-// const playerDao = new PlayerDaoFile;
-// const handDao = new HandDaoFile;
-// const mistakeDao = new MistakeDaoFile;
-// const mistakeMadeDao = new MistakeMadeDaoFile;
 
 gameController.getAll = async ( req, res ) => {
   try {
@@ -303,6 +298,8 @@ gameController.endHand = async (req,res) => {
   }
 }
 
+gameController.getEndGame = (req,res) => res.redirect(`/game/${req.params.id}/tablePoints`);
+
 gameController.getTablePoints = async (req,res) => {
   try {
     const game = await gameDao.getById(req.params.id);
@@ -450,17 +447,28 @@ gameController.deleteGame = async ( req, res ) => {
       }
       for(let i = 0; i < players.length; i++) {
         const p = players[i];
-        if(p.handList > 0 ){
+        // Eliminamos las manos relacionadas a cada jugador
+        if(p.handList.length){
           const handIdList = p.handList;
           for ( let i = 0; i < handIdList.length; i++){
             const handId = handIdList[i];
             await handDao.deleteById(handId);
           }
         }
+        if(p.mistakeList.length){
+          const mistakeList = p.mistakeList;
+          // Eliminamos los mistake relacionadas a cada jugador
+          for ( let i = 0; i < mistakeList.length; i++){
+            const mistakeId = mistakeList[i];
+            await mistakeMadeDao.deleteById(mistakeId);
+          }
+        }
+        // Eliminamos las Jugadores relacionadas al juego
         await playerDao.deleteById(p.id);
-      };
-    } 
-    await gameDao.deleteById(game.id);
+      }
+    };  
+    // Eliminamos el juego
+    await gameDao.deleteById(gameId);
     res.redirect('/game/getAll');
   } catch (err) {
     const message = err.message || "Ocurrio un error";

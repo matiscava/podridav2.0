@@ -17,6 +17,7 @@ gameRoute
   .post('/taken',gameController.taken)
   .get('/:id/handPoints', gameController.getHandPoints)
   .post('/:id/endHand',gameController.endHand)
+  .get('/:id/endGame', gameController.getEndGame)
   .get('/:id/tablePoints',gameController.getTablePoints)
   .get('/:id/addMistake',gameController.getAddMistake)
   .get('/:id/addMistake/:mistakeId',gameController.getAddMistake)

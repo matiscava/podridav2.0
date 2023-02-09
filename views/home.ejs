@@ -1,9 +1,9 @@
 <%- include('./components/head.ejs') %> 
-<main>
+<main id="home">
   <div class="container">
     <h1><%= title %></h1>
     <p>App para anotar los puntos de La Podrida</p>
-    <div class="button-container">
+    <div class="button-container button-home-container">
       <form action="/game/new" method="post" id="form-one-button">
         <input class="menu-button" type="submit" value="Juego Nuevo">
       </form>

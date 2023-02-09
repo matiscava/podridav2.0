@@ -7,10 +7,10 @@
       <select name="playerId" id="firstPlayer">
         <% playerList.forEach( p => { %>
           <option value="<%= p.id %>"><%= p.name %></option>
-        <% }); %>  
+        <% }); %>
       </select>
       <input type="hidden" name="gameId" value="<%= gameId %>">
-      <input type="submit" value="Iniciar Juego">
+      <input type="submit" class="menu-button" value="Iniciar Juego">
     </form>
   </div>
 </main>
