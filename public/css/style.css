@@ -418,6 +418,7 @@ p{
 .radioTake:checked + label {
   background-color: rgb(60, 221, 114);
   border-color: rgb(91, 168, 117);
+  color: rgb(58, 116, 78);
 } 
 
 @media screen and (max-width: 1000px) {
@@ -486,14 +487,14 @@ table th{
   background-color: rgb(219, 219, 200);
 }
 
-.pointsTable tbody tr.tr-middle {
+.pointsTable tbody tr.trMiddle {
   background-color: #cad6e9;
 }
-.pointsTable tbody tr.tr-middle:nth-child(even) {
+.pointsTable tbody tr.trMiddle:nth-child(even) {
   background-color: #8599b9;
 }
 
-.pointsTable tbody tr.mistake-row {
+.pointsTable tbody tr.mistakeRow {
   background-color: #f3938c;
   color: #a92a21;
   font-weight: 700;
@@ -503,6 +504,25 @@ table th{
   color: #fff;
   text-align: center;
   font-weight: 700;
+}
+.headerTh {
+  border-left: 2px solid #a0cdb1;
+  border-bottom: 1px solid #a0cdb1;
+}
+.handTd {
+  border-left: 2px solid rgb(104, 104, 65);
+}
+.trMiddle .handTd {
+  border-left: 2px solid #4f668a;
+}
+.thMiddle {
+  border-left-width: 1px;
+}
+.mistakeTd {
+  border-left: 2px solid #a92a21;
+}
+.pointsTd {
+  border-left: 2px solid rgb(66, 123, 146);
 }
 
 #btn-export-to-excel {

@@ -26,9 +26,9 @@
     </div>
     <form action="/game/<%=gameId%>/endHand" method="post" id="formEndHand">
       <div class="formButtons">
+        <input class="menu-button button-submit" type="submit" value="Terminar Mano">
         <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
         <input class="menu-button" type="button" onclick='location.href=`/game/<%=gameId  %>/taken`' value="Editar Llevadas">
-        <input class="menu-button" type="submit" value="Terminar Mano">
       </div>
     </form>
   </div>

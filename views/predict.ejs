@@ -9,7 +9,7 @@
         <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió:</label>
         <div class="input-container">
           <% for (let i = 0; i<=cardLimit;i++) {%>
-            <input type="radio" class="radioPredict none" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if(i==p.predict) { %> checked<% } %> >
+            <input type="radio" class="radioPredict none<% if(index===6) { %> lastPlayer<% } %>" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if(i==p.predict) { %> checked<% } %> >
             <label for="predict-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
             <% } %>  
         </div>
@@ -18,7 +18,7 @@
         </div>
       <% }) %>
       <input type="hidden" name="gameId" value="<%= gameId %>">
-      <input type="submit" class="menu-button" value="Iniciar la Mano">
+      <input type="submit" class="menu-button button-submit" value="Iniciar la Mano">
       <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
     </form>
   </div>

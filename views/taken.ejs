@@ -18,9 +18,9 @@
       <% }) %>
       <input type="hidden" name="gameId" value="<%= gameId %>">
       <div class="formButtons">
+        <input class="menu-button input-btn" type="submit" value="Calcular Puntos" disabled>
         <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
         <input class="menu-button" type="button" onclick='location.href=`/game/<%=gameId%>/predict`' value="Editar pedidas">
-        <input class="menu-button" type="submit" value="Calcular Puntos" disabled>
       </div>
     </form>
   </div>

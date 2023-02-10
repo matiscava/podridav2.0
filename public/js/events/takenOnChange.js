@@ -4,6 +4,7 @@ export default function takenOnChange() {
     $inputSubmit = d.querySelector("input[type='submit']"),
     $problemText = d.getElementById("problemText");
     let takes = 0;
+
     function getTakeState(takes) {
       if (takes !== cardLimit) {
         $inputSubmit.disabled = true;
@@ -30,4 +31,7 @@ export default function takenOnChange() {
       getTakeState(takes);
     })
   });
+  d.getElementsByClassName("formCards")[0].addEventListener('submit', (e) => {
+    $inputSubmit.disabled = true;
+  })
 }

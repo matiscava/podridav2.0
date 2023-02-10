@@ -9,25 +9,25 @@
           <tr>
             <th></th>
             <% playerList.forEach( p => { %>
-              <th scope="col" colspan="3"><%= p.name %></th>  
+              <th scope="col" colspan="3" class="headerTh"><%= p.name %></th>  
             <% }) %>  
           </tr>
           <tr>
             <th>Mano</th>
             <% playerList.forEach( p => { %>
-              <th>P</th>  
-              <th>Ll</th>  
-              <th>Pts</th>  
+              <th class="headerTh">P</th>  
+              <th class="headerTh thMiddle">Ll</th>  
+              <th class="headerTh thMiddle">Pts</th>  
             <% }) %>  
           </tr>
         </thead>
         <tbody>
           <% for(let i =0; i <= 22; i++){ %>
             <% if (i==22) {%> 
-              <tr class="mistake-row">
+              <tr class="mistakeRow">
                 <th scope="row">Mistake</th>
                 <% playerList.forEach( p => { %>
-                  <td scope="col" colspan="3"><%=p.mistakePoints%></td>  
+                  <td scope="col" colspan="3" class="mistakeTd"><%=p.mistakePoints%></td>  
                 <% }) %>  
               </tr>
             <% } %>
@@ -35,17 +35,17 @@
               <tr>
                 <th scope="row">Puntos</th>
                 <% playerList.forEach( p => { %>
-                  <td scope="col" colspan="3"><%=p.finalPoints%></td>  
+                  <td scope="col" colspan="3" class="pointsTd"><%=p.finalPoints%></td>  
                 <% }) %>  
               </tr>
             <% } %>
             <% if (i<21) {%> 
-              <tr <% if (i>6 && i<14) {%>class="tr-middle"<%}%>>
+              <tr <% if (i>6 && i<14) {%>class="trMiddle"<%}%>>
                 <th scope="row"><%=i+1%></th>
                 <% playerList.forEach( p => { %>
-                  <td scope="col"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  
-                  <td scope="col"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].take%><%}%></th>  
-                  <td scope="col"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].points%><%}%></th>  
+                  <td scope="col" class="handTd"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  
+                  <td scope="col" class="handTd thMiddle"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].take%><%}%></th>  
+                  <td scope="col" class="handTd thMiddle"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].points%><%}%></th>  
                 <% }) %>  
               </tr>
             <% } %>
