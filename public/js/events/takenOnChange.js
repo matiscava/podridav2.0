@@ -31,7 +31,7 @@ export default function takenOnChange() {
       getTakeState(takes);
     })
   });
-  d.getElementsByClassName("formCards")[0].addEventListener('submit', (e) => {
-    $inputSubmit.disabled = true;
+  d.getElementsByClassName("formCards")[0].addEventListener('submit', () => {
+    d.querySelector(".panel-loader").classList.add("is-active")
   })
 }

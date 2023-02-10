@@ -7,7 +7,6 @@
   --error-color: #f44336;
   --first-modal-color: rgba(34,34,34,0.85);
   --second-modal-color: rgba(223, 223, 223, 0.747);
-
 }
 
 @font-face {
@@ -701,4 +700,18 @@ table th{
     flex-grow: 0;
   }
  
+}
+
+/* LOADER */
+
+.panel-loader {
+  transform: translate(100%,0);
+  background-color: var(--second-modal-color) ;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-loader img {
+  display: block;
+  margin: 0 auto;
 }

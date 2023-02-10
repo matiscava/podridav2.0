@@ -1,5 +1,6 @@
 import exportToExcel from "./events/exportToExcelOnClick.js";
-import handPointsClick from "./events/handPointsClick.js";
+import handPointsSubmit from "./events/handPointsSubmit.js";
+import loadGameClick from "./events/loadGameClick.js";
 import predictOnChange from "./events/predictOnChange.js";
 import takenOnChange from "./events/takenOnChange.js";
 import hamburgerMenu from "./helpers/hamburguerButton.js";
@@ -17,7 +18,10 @@ document.addEventListener('DOMContentLoaded', (e) => {
     setTimeout(() => exportToExcel(), 0 );
   }
   if(getLocation.includes('/game/') && getLocation.includes('/handPoints') ){
-    setTimeout(() => handPointsClick(), 0 );
+    setTimeout(() => handPointsSubmit(), 0 );
+  }
+  if(getLocation === '/game/getAll'){
+    setTimeout(() => loadGameClick(), 0 );
   }
 })
 
