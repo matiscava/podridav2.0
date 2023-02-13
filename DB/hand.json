@@ -1615,5 +1615,152 @@
     "handNumber": 11,
     "take": 3,
     "points": 19
+  },
+  {
+    "id": "52c65b5648f323f3211df380094ca36e",
+    "predict": 0,
+    "handNumber": 12,
+    "take": 0,
+    "points": 10
+  },
+  {
+    "id": "ce52dc776ab9ed19dc8d8c21dc37a73a",
+    "predict": 1,
+    "handNumber": 12,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "f384470cdd5e675193b9b5980808a140",
+    "predict": 2,
+    "handNumber": 12,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "a6102a8548c523cae2780caa837da99e",
+    "predict": 0,
+    "handNumber": 12,
+    "take": 1,
+    "points": -3
+  },
+  {
+    "id": "956d3562ab5d002eb44d1f7c7f1fdba6",
+    "predict": 2,
+    "handNumber": 12,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "b2d56fa35264f99d3c3e93ca119caee2",
+    "predict": 0,
+    "handNumber": 12,
+    "take": 0,
+    "points": 10
+  },
+  {
+    "id": "884041313d187e70745dbad93fe73334",
+    "predict": 1,
+    "handNumber": 12,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "e2c0751434738ab7941c53394b45ba0c",
+    "predict": 2,
+    "handNumber": 13,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "507df638536c51521f5ba7a75619a303",
+    "predict": 1,
+    "handNumber": 13,
+    "take": 0,
+    "points": -3
+  },
+  {
+    "id": "46e29c05de2560fc21dfb73b4aa77970",
+    "predict": 2,
+    "handNumber": 13,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "113f1cb5c26a810282901f3173487a4e",
+    "predict": 1,
+    "handNumber": 13,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "f71f5baced91393e55389e1ea7542080",
+    "predict": 0,
+    "handNumber": 13,
+    "take": 0,
+    "points": 10
+  },
+  {
+    "id": "9c75d819e5d513d4a747e44b860ed86c",
+    "predict": 1,
+    "handNumber": 13,
+    "take": 0,
+    "points": -3
+  },
+  {
+    "id": "b94862daa65036a65693b1b50ed328a0",
+    "predict": 2,
+    "handNumber": 13,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "847eff772640f6ca381b30b44c528e7e",
+    "predict": 1,
+    "handNumber": 14,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "2db08b9327955e7d5f011a2a47f7a1a4",
+    "predict": 0,
+    "handNumber": 14,
+    "take": 0,
+    "points": 10
+  },
+  {
+    "id": "e8ff2e14e22ebae7b24f494b4103ea83",
+    "predict": 2,
+    "handNumber": 14,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "ae716e0cd7b8a0b69ee905716cbcf7b2",
+    "predict": 1,
+    "handNumber": 14,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "f73785594444b044c9a3d1d2ce6d08ba",
+    "predict": 2,
+    "handNumber": 14,
+    "take": 2,
+    "points": 16
+  },
+  {
+    "id": "084cd994e15cac9cff20b0a33d8118ad",
+    "predict": 1,
+    "handNumber": 14,
+    "take": 1,
+    "points": 13
+  },
+  {
+    "id": "0fdedf343c98a39f6f7067e2a54089a1",
+    "predict": 2,
+    "handNumber": 14,
+    "take": 0,
+    "points": -6
   }
 ]
