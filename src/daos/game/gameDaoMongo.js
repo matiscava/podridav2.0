@@ -13,7 +13,6 @@ export default class GameDaoMongo extends MongoContainer {
     })
   }
   async createGame(){
-    const gameList = await this.getAll();
     const game = {};
     game.playerList = [];
     game.timestamp = new Date().getTime();
@@ -39,7 +38,7 @@ export default class GameDaoMongo extends MongoContainer {
         throw new Error("No se pueden agregar más jugadores");
       }
     }catch(err){
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);  
     }
   }

@@ -23,7 +23,7 @@ export default class PlayerDaoMongo extends MongoContainer {
       const result = renameField(asPOJO(response), '_id', 'id')  
       return result;
     } catch(err){
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -35,7 +35,7 @@ export default class PlayerDaoMongo extends MongoContainer {
       playerOriginal.order = player.order;
       this.save(playerOriginal);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

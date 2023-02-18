@@ -24,11 +24,9 @@ gameController.getAll = async ( req, res ) => {
     for (const game of gameList) {
       let players = "Sin jugadores cargados";
       if (game.playerList.length) {
+        const playersList = await playerDao.getByIdList(game.playerList);
         players = [];
-        for (const playerId of game.playerList) {
-          const player = await playerDao.getById(playerId);
-          players.push(player.name);
-        }
+        players.push(playersList.map(player => player.name));
         players = players.join(", ") + ".";
       }
       const date = new Date(game.timestamp).toLocaleDateString();
@@ -42,7 +40,7 @@ gameController.getAll = async ( req, res ) => {
   }
 }
 
-gameController.create = async ( req, res) => {
+gameController.create = async ( req, res ) => {
   try {
     const gameId = await gameDao.createGame();
     res.redirect(`/game/${gameId}`);
@@ -67,7 +65,7 @@ gameController.getById = async ( req, res) => {
   }
 }
 
-gameController.getSetPlayers = async (req, res) => {
+gameController.getSetPlayers = (req, res) => {
   try {
     res.render(path.join(process.cwd(),'/views/setPlayers.ejs'), {title: "Ingrese los jugadores",gameId: req.params.id});
   } catch (err) {
@@ -104,7 +102,7 @@ gameController.getSetFirstPlayer = async (req,res) => {
     const playerDtoList = [];
     playerList.forEach(p => playerDtoList.push( playerMapper.mapPlayerToPlayerDtoId(p) ) );
     
-    res.render(path.join(process.cwd(),'/views/setFirstPlayer.ejs'), {title: "Seleccione el primer jugador",gameId: req.params.id, playerList: playerDtoList,title:"Seleccione el jugador que inicia como mano"});
+    res.render(path.join(process.cwd(),'/views/setFirstPlayer.ejs'), {title:"Seleccione el jugador que inicia como mano",gameId: req.params.id, playerList: playerDtoList});
   } catch (err) {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
@@ -157,19 +155,13 @@ gameController.getPredict = async ( req , res) => {
       cache.set(req.params.id, game);
     }
     const handNumber = parseInt(game.handNumber);
-    const playerList = game.playerList;
     const players = [];
-    for (let i = 0; i < playerList.length; i++) {
-      const player = await playerDao.getById(playerList[i]);
-      if(player.handList) {
-        const handList = [];
-        for (let j = 0; j< player.handList.length ; j++) {
-          const hand = await handDao.getById(player.handList[j]);
-          handList.push(hand);
+    const playerList = await playerDao.getByIdList(game.playerList);
+    for( const player of playerList){
+        if(player.handList.length){
+          const hand = await handDao.getByIdListAndHandNumber(player.handList, handNumber);
+          if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
         }
-        const hand = handList.find( h => h.handNumber === handNumber);
-        if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
-      }
       players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
     }
     players.sort((a,b) => a.order - b.order);
@@ -217,21 +209,27 @@ gameController.getTaken = async (req,res) => {
       cache.set(req.params.id, game);
     }
     const handNumber = parseInt(game.handNumber);
-    const playerList = game.playerList;
+    const playerList = await playerDao.getByIdList(game.playerList);
     const players = [];
-    for (let i = 0; i < playerList.length; i++) {
-      const player = await playerDao.getById(playerList[i]);
-      if(player.handList) {
-        const handList = [];
-        for (let j = 0; j< player.handList.length ; j++) {
-          const hand = await handDao.getById(player.handList[j]);
-          handList.push(hand);
-        }
-        const hand = handList.find( h => h.handNumber === handNumber);
-        if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
-      }
+    for (const player of playerList) {
+      const hand = await handDao.getByIdListAndHandNumber(player.handList, handNumber);
+      if ( !hand ) throw new Error(`No existe la mano N°${handNumber}, vuelva a la redicción`);
+      player.handList = handMapper.mapHandToHandDtoPredict(hand);
       players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
     }
+    // for (let i = 0; i < playerList.length; i++) {
+    //   const player = await playerDao.getById(playerList[i]);
+    //   if(player.handList) {
+    //     const handList = [];
+    //     for (let j = 0; j< player.handList.length ; j++) {
+    //       const hand = await handDao.getById(player.handList[j]);
+    //       handList.push(hand);
+    //     }
+    //     const hand = handList.find( h => h.handNumber === handNumber);
+    //     if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
+    //   }
+    //   players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
+    // }
     players.sort((a,b) => a.order - b.order);
     const cardLimit = getCardQuantity(handNumber);
     res.render(path.join(process.cwd(),'/views/taken.ejs'), {title: `Llevadas Mano N° ${handNumber}`,gameId: req.params.id, playerList: players,cardLimit});
@@ -274,23 +272,17 @@ gameController.getHandPoints = async (req,res) => {
       cache.set(req.params.id, game);
     }
     const players = [];
+    const playerList = await playerDao.getByIdList(game.playerList);
     if(game.playerList.length){
-      const playerList = game.playerList;
-      for (let i = 0; i < playerList.length; i++) {
-        const playerId = playerList[i];
-        const player = await playerDao.getById(playerId);
-        const handIdList = player.handList;
-        for ( let i = 0; i < handIdList.length; i++){
-          const handId = handIdList[i];
-          const hand = await handDao.getById(handId);
-          if( hand.handNumber === game.handNumber) 
-            players.push(
-              handMapper.mapHandToHandDtoPoints( {name: player.name,order: player.order,predict: hand.predict, take: hand.take, points: hand.points} ) 
-              )
-        }  
+      for (const player of playerList) {
+        const hand = await handDao.getByIdListAndHandNumber(player.handList, parseInt(game.handNumber));
+        players.push(
+          handMapper.mapHandToHandDtoPoints( {name: player.name,order: player.order,predict: hand.predict, take: hand.take, points: hand.points} ) 
+          )
       }
     } else throw new Error(`El juego ID: ${req.params.id}, no tiene jugadores, verifique sus datos`);
     players.sort((a,b) => a.order - b.order);
+    console.log(players);
     res.render(path.join(process.cwd(),'/views/handPoints.ejs'), {title: `Puntos de la Mano N° ${game.handNumber}`,gameId: req.params.id, playerList: players});
   } catch (err) {
     const message = err.message || "Ocurrio un error";
@@ -314,7 +306,7 @@ gameController.endHand = async (req,res) => {
       player.order = order;
       await playerDao.save(player); 
     }
-    let handNumber = game.handNumber+1;
+    const handNumber = game.handNumber+1;
     game.handNumber = handNumber;
     game.viewName = game.handNumber === 22 ? "endGame" : "predict";
     await gameDao.save(game);
@@ -350,7 +342,6 @@ gameController.getTablePoints = async (req,res) => {
           handList.push(handMapper.mapHandToHandDtoTablePoints({handNumber: hand.handNumber, predict:hand.predict,take: hand.take, points:hand.points}));
       }
       const mistakeIdList = player.mistakeList;
-      const mistakeList = [];
       for ( let i = 0; i < mistakeIdList.length; i++){
         const mistakeMade = await mistakeMadeDao.getById(mistakeIdList[i]);
         const mistake = await mistakeDao.getById(mistakeMade.mistakeId);
@@ -516,7 +507,7 @@ gameController.deleteGame = async ( req, res ) => {
         // Eliminamos las Jugadores relacionadas al juego
         await playerDao.deleteById(p.id);
       }
-    };  
+    } 
     // Eliminamos el juego
     await gameDao.deleteById(gameId);
     cache.delete(req.body.gameId);

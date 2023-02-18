@@ -8,8 +8,8 @@ export default class HandDaoMongo extends MongoContainer {
     super('hand', {
     predict: {type: Number, required:true, default: 0},
     handNumber: {type: Number, required: true},
-    take: {type: String, required: true, default:0},
-    points: {type: Array, required:true, default: 0}
+    take: {type: Number, required: true, default:0},
+    points: {type: Number, required:true, default: 0}
     })
   }
   async createHand(hand){
@@ -30,7 +30,7 @@ export default class HandDaoMongo extends MongoContainer {
         return result.id;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
@@ -48,8 +48,23 @@ export default class HandDaoMongo extends MongoContainer {
       h.points = points;
       await this.createHand(h);
     }catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
+  async getByIdListAndHandNumber(handIdList, handNumber){
+    try {
+      const mongoIdList = handIdList.map( id => typeof id === 'string' ? id : new ObjectId(id)); 
+      let document = await this.collection.find({
+        _id: { $in: mongoIdList },
+        handNumber: handNumber
+      },{__v:0});
+      document = renameField (asPOJO(document[0]),'_id','id');
+      return document;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
 }
