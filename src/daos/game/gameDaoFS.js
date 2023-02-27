@@ -22,19 +22,19 @@ export default class GameDaoFile extends FileContainer {
       fs.writeFileSync(`${this.file}`,dataToJson);
       return game.id;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
 
-  async insertPlayer (player) {
-    try {
-      const game = await this.getById(player.gameId);
+  async insertPlayer (playerList, gameId) {
+    try{
+      const game = await this.getById(gameId);
       const gameList = await this.getAll();
       if( game.playerList.length <= 6){
         if( game.playerList.length === 6 ) game.viewName = "setFirstPlayer"; 
-        game.playerList.push(player.id);
-        let gameIndex = gameList.findIndex( el => el.id === game.id);
+        game.playerList.push(...playerList);
+        const gameIndex = gameList.findIndex( el => el.id === game.id);
         gameList.splice(gameIndex,1,game);
         const dataToJson = JSON.stringify( gameList, null, 2);
         fs.writeFileSync(`${this.file}`,dataToJson);
@@ -43,8 +43,8 @@ export default class GameDaoFile extends FileContainer {
         throw new Error("No se pueden agregar más jugadores")
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
-};
+}

@@ -20,7 +20,7 @@ export default class FileContainer {
       const element = list.find( el => el.id === id);
       return element;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -34,7 +34,7 @@ export default class FileContainer {
       fs.writeFileSync(`${this.file}`,dataToJson);
       return true;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -47,7 +47,7 @@ export default class FileContainer {
       const dataToJson = JSON.stringify(list, null, 2);
       fs.writeFileSync(`${this.file}`,dataToJson);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

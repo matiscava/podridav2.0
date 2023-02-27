@@ -26,7 +26,7 @@ export default class MistakeMadeDaoFile extends FileContainer {
       fs.writeFileSync(`${this.file}`,dataToJson);
       return element;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

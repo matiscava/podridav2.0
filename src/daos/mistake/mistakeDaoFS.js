@@ -23,7 +23,7 @@ export default class MistakeDaoFile extends FileContainer {
       const dataToJson = JSON.stringify( list, null, 2);
       fs.writeFileSync(`${this.file}`,dataToJson);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

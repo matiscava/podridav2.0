@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import MongoContainer from '../../containers/MongoContainer.js';
 import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 

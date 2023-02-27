@@ -10,12 +10,18 @@ import MistakeDaoMongo from "./mistake/mistakeDaoMongo.js";
 import MistakeMadeDaoMongo from "./mistakeMade/mistakeMadeDaoMongo.js";
 import PlayerDaoMongo from "./player/playerDaoMongo.js";
 
+import GameDaoMemory from "./game/gameDaoMemory.js";
+import HandDaoMemory from "./hand/handDaoMemory.js";
+import MistakeDaoMemory from "./mistake/mistakeDaoMemory.js";
+import MistakeMadeDaoMemory from "./mistakeMade/mistakeMadeDaoMemory.js";
+import PlayerDaoMemory from "./player/playerDaoMemory.js";
+
 export default class PersistenceFactory {
   constructor(pers) {
     this.daos = {};
     this.getPersistenceMethod(pers);
   }
-  async getPersistenceMethod(pers) {
+  getPersistenceMethod(pers) {
     if(pers){
       if ( pers === 'fs' ){
         this.daos['gameDao'] = new GameDaoFile;
@@ -34,6 +40,15 @@ export default class PersistenceFactory {
         this.daos['playerDao'] = new PlayerDaoMongo;
 
         console.log('Se conecto a Mongo');
+      }
+      if (pers === 'memory') {
+        this.daos['gameDao'] = new GameDaoMemory;
+        this.daos['handDao'] = new HandDaoMemory;
+        this.daos['mistakeDao'] = new MistakeDaoMemory;
+        this.daos['mistakeMadeDao'] = new MistakeMadeDaoMemory;
+        this.daos['playerDao'] = new PlayerDaoMemory;
+
+        console.log('Se conecto a Memory');
       }
     } else if(!pers) {
       console.error('Ocurrio un error');

@@ -19,7 +19,7 @@ export default class PlayerDaoFile extends FileContainer {
       fs.writeFileSync(`${this.file}`,dataToJson);
       return player;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -33,7 +33,7 @@ export default class PlayerDaoFile extends FileContainer {
       const dataToJson = JSON.stringify(playerList, null, 2);
       fs.writeFileSync(`${this.file}`,dataToJson);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

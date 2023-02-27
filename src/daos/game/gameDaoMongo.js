@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+
 import MongoContainer from '../../containers/MongoContainer.js';
 import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 
@@ -22,12 +21,13 @@ export default class GameDaoMongo extends MongoContainer {
     const result = renameField(asPOJO(response), '_id', 'id')  
     return result.id;
   }
-  async insertPlayer (player) {
+
+  async insertPlayer (playerList, gameId) {
     try{
-      const game = await this.getById(player.gameId);
+      const game = await this.getById(gameId);
       if( game.playerList.length < 7){
-        if( game.playerList.length === 6 ) game.viewName = "setFirstPlayer"; 
-        game.playerList.push(player.id);
+        game.viewName = "setFirstPlayer"; 
+        game.playerList = playerList;
         const { n, nModified } = await this.collection.updateOne({ _id: game.id }, {
           $set: game
         })

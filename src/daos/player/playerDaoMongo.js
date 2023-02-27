@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import MongoContainer from '../../containers/MongoContainer.js';
 import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 
@@ -27,13 +25,31 @@ export default class PlayerDaoMongo extends MongoContainer {
       console.error(`Error ${err.status}: ${message}`);
     }
   }
+  async getGamePlayers ( gameId) {
+    try {
+      const playerList = await this.collection.find({gameId: gameId},{__v:0});
+      playerList.map( p => renameField(asPOJO(p), '_id','id'));
+      return playerList;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
 
-  async playerSetOrder(player){
+  async playerSetOrder(players){
     try {      
-      const playerList = await this.getAll();
-      const playerOriginal = playerList.find(el => el.id === player.id);
-      playerOriginal.order = player.order;
-      this.save(playerOriginal);
+      const playerList = await this.getGamePlayers(players[0].gameId);
+      playerList.map( p => renameField(asPOJO(p), '_id','id'));
+      playerList.forEach( async p  =>  {
+        for (let i = 0; i < players.length; i++) {
+          const oldPlayer = players[i];
+          if(p.id === oldPlayer.id){
+            p.order = oldPlayer.order;
+          }
+        }
+        console.log(p);
+        await this.save(p);
+      });
     } catch (err) {
       const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);

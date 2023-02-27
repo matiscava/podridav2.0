@@ -2,7 +2,7 @@ import mongodb from 'mongodb';
 import mongoose from 'mongoose';
 import options from '../config/config.js';
 import dotenv from 'dotenv';
-import {asPOJO, removeField, renameField} from '../utils/objectsUtils.js';
+import {asPOJO, renameField} from '../utils/objectsUtils.js';
 
 const ObjectId = mongodb.ObjectId;
 
