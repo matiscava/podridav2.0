@@ -47,7 +47,6 @@ export default class PlayerDaoMongo extends MongoContainer {
             p.order = oldPlayer.order;
           }
         }
-        console.log(p);
         await this.save(p);
       });
     } catch (err) {

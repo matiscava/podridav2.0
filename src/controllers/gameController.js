@@ -123,7 +123,6 @@ gameController.setFirstPlayer = async ( req, res ) => {
     }
     const playerList = await playerDao.getGamePlayers(gameId);
     const playerIndex = playerList.findIndex(player  => player.id  === FirstPlayerId);
-    console.log(FirstPlayerId, playerIndex);
     let order = 0;
     for (let i = playerIndex; i < playerList.length; i++) {
       const element = playerList[i];
@@ -133,7 +132,6 @@ gameController.setFirstPlayer = async ( req, res ) => {
       const element = playerList[i];
       element.order = order++;
     }
-    console.log("setFirstPlayer", playerList);
     await playerDao.playerSetOrder(playerList);
     
     if ( game.viewName === "setFirstPlayer" ) {

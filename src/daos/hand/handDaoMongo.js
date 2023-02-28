@@ -57,7 +57,7 @@ export default class HandDaoMongo extends MongoContainer {
         _id: { $in: mongoIdList },
         handNumber: handNumber
       },{__v:0});
-      document = renameField (asPOJO(document[0]),'_id','id');
+      if(document.length) document = renameField (asPOJO(document[0]),'_id','id');
       return document;
     } catch (err) {
       const message = err || "Ocurrio un error";

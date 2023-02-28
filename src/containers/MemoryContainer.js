@@ -5,7 +5,6 @@ export default class MemoryContainer {
   getAll(){
     try {
       const list = JSON.parse(localStorage.getItem(this.name));
-      console.log(list);
       if( list === null ) localStorage.setItem(this.name, '[]')
       return list;
     } catch (err) {

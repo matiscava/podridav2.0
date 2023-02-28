@@ -14,7 +14,9 @@
           </tr>
         </thead>
         <tbody>
-          <% mistakeMadeList.forEach( m => { %>
+          <% if (!mistakeMadeList.length){ %>
+            <th colspan="5"> No hay Mistake en esta partida </th>
+          <%}else{ mistakeMadeList.forEach( m => { %>
             <tr>
               <th><%= m.name %></th>
               <th><%= m.mistake %></th>
@@ -22,24 +24,25 @@
               <th><%= m.handNumber %></th>
               <th>
                 <div style="display: flex; justify-content: space-evenly; align-items: center;">
-                  <button type="button" class="btn btn-warning">
+                  <button type="button" class="btn-edit">
                     <a class="text-white" href="/game/<%= gameId %>/addMistake/<%= m.id %>">
-                        Editar
+                      <span class="icon-pencil"></span>
                     </a>
                   </button>
                   <form style="margin: 0px; margin-left: 5px" action="/game/<%= gameId %>/deleteMistake/<%= m.id %>" method="post">
-                    <button class="text-white btn btn-danger" type="submit">
-                        Eliminar
+                    <button class="btn-delete" type="submit">
+                      <span class="icon-bin2"></span>
                     </button>
                     <input type="hidden" name="_method" value="DELETE">
                   </form>
                 </div>
               </th>
             </tr>  
-          <% }) %>  
+          <% }) }%>  
         </tbody>
       </table>
     </div>
+    <a class="menu-button" href="/game/<%= gameId %>">Volver a la partida</a>
   </div>
 </main> 
 <%- include('./components/footer.ejs')  %> 

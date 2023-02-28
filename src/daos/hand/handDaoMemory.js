@@ -56,7 +56,6 @@ export default class HandDaoMemory extends MemoryContainer{
         }
       });
 
-      console.log("getByIdListAndHandNumber", handList.length, handList);
       return handList;
     } catch (err) {
       const message = err || "Ocurrio un error";

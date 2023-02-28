@@ -75,8 +75,8 @@ export default class MongoContainer {
     try {
       const mongoIdList = idList.map( id => typeof id === 'string' ? id : new ObjectId(id));
       let documents = await this.collection.find({_id: {$in: mongoIdList }},{__v:0}); 
-      documents = documents.map(asPOJO);
-      documents = documents.map( doc => renameField(doc, '_id','id'));
+      // documents = documents.map(asPOJO);
+      documents = documents.map( doc => renameField(asPOJO(doc), '_id','id'));
       return documents;
       /*
       { field: { $in: [<value1>, <value2>, ... <valueN> ] } }
