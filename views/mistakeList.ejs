@@ -13,8 +13,10 @@
         </thead>
         <tbody>
           <% if (!mistakeList.length){ %>
-            <th colspan="3">No se cargaron Mistake's</th>
-          <% }else{ mistakeList.forEach( m => { %>
+
+            <th colspan="3"> No hay mistake guardados</th>
+          <% }else{ %>  
+          <% mistakeList.forEach( m => { %>
             <tr>
               <th><%= m.mistake %></th>
               <th><%= m.points %></th>
@@ -34,7 +36,9 @@
                 </div>
               </th>
             </tr>  
+
           <% }) }%>  
+
         </tbody>
       </table>
     </div>

@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js production",
-    "prod": "nodemon main.js"
+    "dev": "nodemon main.js"
   },
   "author": "matiscava",
   "license": "MIT",
@@ -18,11 +18,13 @@
     "express": "^4.18.2",
     "express-method-override": "^0.0.3",
     "express-session": "^1.17.3",
+    "knex": "^2.4.2",
     "lru-cache": "^7.14.1",
     "mime": "^3.0.0",
     "mongodb": "^4.13.0",
     "mongoose": "^6.9.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "sqlite3": "^5.1.6"
   },
   "repository": {
     "type": "git",

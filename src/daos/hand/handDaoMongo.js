@@ -35,6 +35,7 @@ export default class HandDaoMongo extends MongoContainer {
   async setTakenAndPoints(hand) {
     try {
       const h = await this.getById(hand.id);
+
       h.take = parseInt(hand.take);
       let points = 0;
       if ( h.predict === h.take)
