@@ -155,6 +155,7 @@ gameController.getPredict = async ( req , res) => {
       //   cache.set(req.body.gameId, game);
       // }
     const handNumber = parseInt(game.handNumber);
+    const playerList = game.playerList;
     const players = [];
     for (const playerId of playerList) {
       const player = await playerDao.getPlayerById(playerId);
@@ -164,6 +165,9 @@ gameController.getPredict = async ( req , res) => {
           const hand = await handDao.getById(handId);
           handList.push(hand);
         }
+        const hand = handList.find( h => h.handNumber === handNumber);
+        if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
+      }
       players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
     }
     players.sort((a,b) => a.order - b.order);
