@@ -13,15 +13,19 @@ export default class GameDaoMongo extends MongoContainer {
     })
   }
   async createGame(){
-    const gameList = await this.getAll();
-    const game = {};
-    game.playerList = [];
-    game.timestamp = new Date().getTime();
-
-    const document = new this.collection(game);
-    const response = await document.save();
-    const result = renameField(asPOJO(response), '_id', 'id')  
-    return result.id;
+    try {
+      const game = {};
+      game.playerList = [];
+      game.timestamp = new Date().getTime();
+      
+      const document = new this.collection(game);
+      const response = await document.save();
+      const result = renameField(asPOJO(response), '_id', 'id')  
+      return result.id;
+    } catch (err) {
+      let message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);   
+    }
   }
   async insertPlayer (player) {
     try{

@@ -15,8 +15,8 @@ export default class MongoContainer {
 
   async init() {
     try {
-      if(!this.conexion) {
-        this.conexion = await mongoose.connect(options.mongodb.cnxStr, options.mongodb.options);
+      if(!this.connection) {
+        this.connection = await mongoose.connect(options.mongodb.cnxStr, options.mongodb.options);
       }
     } catch (err) {
       let message = err || "Ocurrio un error";

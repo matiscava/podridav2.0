@@ -25,6 +25,13 @@ const options = {
       serverSelectionTimeoutMS: 5000
     }
   },
+  sqlite: {
+    client: 'sqlite3',
+    connection: {
+      filename: "./DB/mydb.sqlite"
+    },
+    useNullAsDefault: true
+  },
   file: {
     path: `./${config.FILE_PATH}`
   }

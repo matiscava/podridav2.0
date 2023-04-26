@@ -7,8 +7,7 @@ export default class FileContainer {
   async getAll(){
     try {
       const data = await fs.promises.readFile(this.file, 'utf-8');
-      if (!data) return fs.writeFileSync(`${this.file}`,'[]');
-      return JSON.parse(data);
+      return JSON.parse(data || '[]');
     } catch (err) {
       const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
@@ -18,6 +17,7 @@ export default class FileContainer {
     try {
       const list = await this.getAll();
       const element = list.find( el => el.id === id);
+      if (!element) throw new Error(`No se encontró un elemento con id ${id}`);
       return element;
     } catch (err) {
       let message = err || "Ocurrio un error";
@@ -30,9 +30,7 @@ export default class FileContainer {
       const list = await this.getAll();
       const elementIndex = list.findIndex( el => el.id === element.id);
       list.splice(elementIndex,1,element);
-      const dataToJson = JSON.stringify(list, null, 2);
-      fs.writeFileSync(`${this.file}`,dataToJson);
-      return true;
+      await fs.promises.writeFile(this.file, JSON.stringify(list, null, 2));
     } catch (err) {
       let message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
@@ -44,8 +42,7 @@ export default class FileContainer {
       const list = await this.getAll();
       const elementIndex = list.findIndex( el => el.id === id);
       list.splice(elementIndex,1);
-      const dataToJson = JSON.stringify(list, null, 2);
-      fs.writeFileSync(`${this.file}`,dataToJson);
+      await fs.promises.writeFile(this.file, JSON.stringify(list, null, 2));
     } catch (err) {
       let message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);

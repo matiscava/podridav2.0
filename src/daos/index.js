@@ -10,6 +10,12 @@ import MistakeDaoMongo from "./mistake/mistakeDaoMongo.js";
 import MistakeMadeDaoMongo from "./mistakeMade/mistakeMadeDaoMongo.js";
 import PlayerDaoMongo from "./player/playerDaoMongo.js";
 
+import GameDaoSqlite from "./game/gameDaoSqlite.js";
+import HandDaoSqlite from "./hand/handDaoSqlite.js";
+import MistakeDaoSqlite from "./mistake/mistakeDaoSqlite.js";
+import MistakeMadeDaoSqlite from "./mistakeMade/mistakeMadeDaoSqlite.js";
+import PlayerDaoSqlite from "./player/playerDaoSqlite.js";
+
 export default class PersistenceFactory {
   constructor(pers) {
     this.daos = {};
@@ -34,6 +40,15 @@ export default class PersistenceFactory {
         this.daos['playerDao'] = new PlayerDaoMongo;
 
         console.log('Se conecto a Mongo');
+      }
+      if (pers === 'sqlite') {
+        this.daos['gameDao'] = new GameDaoSqlite;
+        this.daos['handDao'] = new HandDaoSqlite;
+        this.daos['mistakeDao'] = new MistakeDaoSqlite;
+        this.daos['mistakeMadeDao'] = new MistakeMadeDaoSqlite;
+        this.daos['playerDao'] = new PlayerDaoSqlite;
+
+        console.log('Se conecto a Sqlite3');
       }
     } else if(!pers) {
       console.error('Ocurrio un error');

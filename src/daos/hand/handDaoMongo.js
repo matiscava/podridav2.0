@@ -8,8 +8,8 @@ export default class HandDaoMongo extends MongoContainer {
     super('hand', {
     predict: {type: Number, required:true, default: 0},
     handNumber: {type: Number, required: true},
-    take: {type: String, required: true, default:0},
-    points: {type: Array, required:true, default: 0}
+    take: {type: Number, required: true, default:0},
+    points: {type: Number, required:true, default: 0}
     })
   }
   async createHand(hand){
@@ -37,6 +37,7 @@ export default class HandDaoMongo extends MongoContainer {
   async setTakenAndPoints(hand) {
     try {
       const h = await this.getById(hand.id);
+
       h.take = parseInt(hand.take);
       let points = 0;
       if ( h.predict === h.take)

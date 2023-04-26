@@ -14,6 +14,10 @@
           </tr>
         </thead>
         <tbody>
+          <% if (!mistakeMadeList.length){ %>
+            <th colspan="5"> No hay mistake guardados</th>
+          <% }else{ %>  
+
           <% mistakeMadeList.forEach( m => { %>
             <tr>
               <th><%= m.name %></th>
@@ -22,14 +26,14 @@
               <th><%= m.handNumber %></th>
               <th>
                 <div style="display: flex; justify-content: space-evenly; align-items: center;">
-                  <button type="button" class="btn btn-warning">
+                  <button type="button" class="btn-edit">
                     <a class="text-white" href="/game/<%= gameId %>/addMistake/<%= m.id %>">
-                        Editar
+                      <span class="icon-pencil"></span>
                     </a>
                   </button>
                   <form style="margin: 0px; margin-left: 5px" action="/game/<%= gameId %>/deleteMistake/<%= m.id %>" method="post">
-                    <button class="text-white btn btn-danger" type="submit">
-                        Eliminar
+                    <button class="btn-delete" type="submit">
+                      <span class="icon-bin2"></span>
                     </button>
                     <input type="hidden" name="_method" value="DELETE">
                   </form>
@@ -37,6 +41,8 @@
               </th>
             </tr>  
           <% }) %>  
+        <% } %> 
+          
         </tbody>
       </table>
     </div>
