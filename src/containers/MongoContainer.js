@@ -2,7 +2,7 @@ import mongodb from 'mongodb';
 import mongoose from 'mongoose';
 import options from '../config/config.js';
 import dotenv from 'dotenv';
-import {asPOJO, removeField, renameField} from '../utils/objectsUtils.js';
+import {asPOJO, renameField} from '../utils/objectsUtils.js';
 
 const ObjectId = mongodb.ObjectId;
 
@@ -19,7 +19,7 @@ export default class MongoContainer {
         this.connection = await mongoose.connect(options.mongodb.cnxStr, options.mongodb.options);
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -31,7 +31,7 @@ export default class MongoContainer {
       documents = documents.map( doc => renameField(doc, '_id' , 'id'));
       return documents;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -39,7 +39,7 @@ export default class MongoContainer {
   async getById(id) {
     try {
       const objID = typeof id === 'string' ? id : new ObjectId(id);
-      let data = await this.collection.find( {'_id': objID },{__v:0} )
+      const data = await this.collection.find( {'_id': objID },{__v:0} )
       if (data.length === 0) {
         return null;
       } else {
@@ -47,18 +47,18 @@ export default class MongoContainer {
         return result;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
 
   async deleteById (id) {
     try {
-      const response = await this.collection.deleteOne({ _id: id });
+      await this.collection.deleteOne({ _id: id });
     }catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
-    };
+    }
   }
   async save (element) {
     try {
@@ -67,8 +67,26 @@ export default class MongoContainer {
       })
       if (n == 0 || nModified == 0) throw new Error(`Elemento con el id: '${id}' no fue encontrado`);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
+  async getByIdList ( idList ){
+    try {
+      const mongoIdList = idList.map( id => typeof id === 'string' ? id : new ObjectId(id));
+      let documents = await this.collection.find({_id: {$in: mongoIdList }},{__v:0}); 
+      // documents = documents.map(asPOJO);
+      documents = documents.map( doc => renameField(asPOJO(doc), '_id','id'));
+      return documents;
+      /*
+      { field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+      {"_id":{"$in":playersList}}
+      */
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  } 
+
+
 }

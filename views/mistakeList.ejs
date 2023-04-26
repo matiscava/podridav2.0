@@ -13,6 +13,7 @@
         </thead>
         <tbody>
           <% if (!mistakeList.length){ %>
+
             <th colspan="3"> No hay mistake guardados</th>
           <% }else{ %>  
           <% mistakeList.forEach( m => { %>
@@ -35,8 +36,9 @@
                 </div>
               </th>
             </tr>  
-          <% }) %>  
-        <% } %> 
+
+          <% }) }%>  
+
         </tbody>
       </table>
     </div>

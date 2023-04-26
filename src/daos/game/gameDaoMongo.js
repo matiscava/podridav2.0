@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+
 import MongoContainer from '../../containers/MongoContainer.js';
 import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 
@@ -17,7 +16,7 @@ export default class GameDaoMongo extends MongoContainer {
       const game = {};
       game.playerList = [];
       game.timestamp = new Date().getTime();
-      
+
       const document = new this.collection(game);
       const response = await document.save();
       const result = renameField(asPOJO(response), '_id', 'id')  
@@ -27,12 +26,13 @@ export default class GameDaoMongo extends MongoContainer {
       console.error(`Error ${err.status}: ${message}`);   
     }
   }
-  async insertPlayer (player) {
+
+  async insertPlayer (playerList, gameId) {
     try{
-      const game = await this.getById(player.gameId);
+      const game = await this.getById(gameId);
       if( game.playerList.length < 7){
-        if( game.playerList.length === 6 ) game.viewName = "setFirstPlayer"; 
-        game.playerList.push(player.id);
+        game.viewName = "setFirstPlayer"; 
+        game.playerList = playerList;
         const { n, nModified } = await this.collection.updateOne({ _id: game.id }, {
           $set: game
         })
@@ -43,7 +43,7 @@ export default class GameDaoMongo extends MongoContainer {
         throw new Error("No se pueden agregar más jugadores");
       }
     }catch(err){
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);  
     }
   }

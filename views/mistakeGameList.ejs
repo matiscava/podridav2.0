@@ -15,10 +15,8 @@
         </thead>
         <tbody>
           <% if (!mistakeMadeList.length){ %>
-            <th colspan="5"> No hay mistake guardados</th>
-          <% }else{ %>  
-
-          <% mistakeMadeList.forEach( m => { %>
+            <th colspan="5"> No hay Mistake en esta partida </th>
+          <%}else{ mistakeMadeList.forEach( m => { %>
             <tr>
               <th><%= m.name %></th>
               <th><%= m.mistake %></th>
@@ -41,11 +39,11 @@
               </th>
             </tr>  
           <% }) %>  
-        <% } %> 
-          
+        <% } %>
         </tbody>
       </table>
     </div>
+    <a class="menu-button" href="/game/<%= gameId %>">Volver a la partida</a>
   </div>
 </main> 
 <%- include('./components/footer.ejs')  %> 

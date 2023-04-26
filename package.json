@@ -25,5 +25,13 @@
     "mongoose": "^6.9.0",
     "nodemon": "^2.0.20",
     "sqlite3": "^5.1.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matiscava/podridav2.0.git"
+  },
+  "bugs": {
+    "url": "https://github.com/matiscava/podridav2.0/issues"
+  },
+  "homepage": "https://github.com/matiscava/podridav2.0#readme"
 }

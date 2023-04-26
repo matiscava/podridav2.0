@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import MongoContainer from '../../containers/MongoContainer.js';
 import { asPOJO, renameField } from '../../utils/objectsUtils.js';
 
@@ -30,7 +28,7 @@ export default class HandDaoMongo extends MongoContainer {
         return result.id;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
@@ -49,8 +47,23 @@ export default class HandDaoMongo extends MongoContainer {
       h.points = points;
       await this.createHand(h);
     }catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
+  async getByIdListAndHandNumber(handIdList, handNumber){
+    try {
+      const mongoIdList = handIdList.map( id => typeof id === 'string' ? id : new ObjectId(id)); 
+      let document = await this.collection.find({
+        _id: { $in: mongoIdList },
+        handNumber: handNumber
+      },{__v:0});
+      if(document.length) document = renameField (asPOJO(document[0]),'_id','id');
+      return document;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
 }

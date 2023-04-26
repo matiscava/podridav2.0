@@ -26,8 +26,10 @@
       </div>
       <div class="label-container"><label for="hand-input">Mano: </label><input type="number" name="handNumber" min="1" max="21" id="hand-input" value="<% if(typeof mistake != "undefined"){  %><%= mistake.handNumber %><% }else{ %><%=handNumber%><% } %>" required></div>
       <input type="hidden" name="id" value="<% if(typeof mistake != "undefined"){  %><%= mistake.id %><% }else{ %>0<% } %>">
-      <input type="submit" value="Cargar mistake" class="menu-button">
+      <input type="submit" value="Cargar Mistake" class="menu-button">
     </form>
+    <a class="menu-button" href="/game/<%= gameId %>">Volver a la partida</a>
+
   </div>
 </main> 
 <%- include('./components/footer.ejs')  %> 

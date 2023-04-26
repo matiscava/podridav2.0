@@ -20,7 +20,7 @@ export default class FileContainer {
       if (!element) throw new Error(`No se encontró un elemento con id ${id}`);
       return element;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -32,7 +32,7 @@ export default class FileContainer {
       list.splice(elementIndex,1,element);
       await fs.promises.writeFile(this.file, JSON.stringify(list, null, 2));
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -44,7 +44,7 @@ export default class FileContainer {
       list.splice(elementIndex,1);
       await fs.promises.writeFile(this.file, JSON.stringify(list, null, 2));
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
