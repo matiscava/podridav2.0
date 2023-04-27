@@ -111,19 +111,33 @@ gameController.setFirstPlayer = async ( req, res ) => {
     const FirstPlayerId = parseInt(req.body.playerId);
     const game = await gameDao.getGameById(req.body.gameId);
     const playerList = game.playerList;
-    
     const playerIndex = playerList.findIndex(playerId  => playerId  === FirstPlayerId);
-    const _updatedPlayers = ( 
-      await Promise.all( 
-        playerList.map( 
-          async playerId => {
-            const player = await playerDao.getById(playerId);
-            player.order = (playerIndex + playerList.indexOf(playerId) +1) % playerList.length;
-            return playerDao.playerSetOrder(player);
-          }
-        )
-      )
-    ).filter(Boolean);    
+    let order = 0;
+    for (let i = playerIndex; i < playerList.length; i++) {
+      const playerId = playerList[i];
+      const player = await playerDao.getById(playerId); 
+      player.order = order;
+      await playerDao.playerSetOrder(player);
+      order++;
+    }
+    for (let i = 0; i < playerIndex; i++) {
+      const playerId = playerList[i];
+      const player = await playerDao.getById(playerId); 
+      player.order = order;
+      await playerDao.playerSetOrder(player);
+      order++;
+    }
+    // const _updatedPlayers = ( 
+    //   await Promise.all( 
+    //     playerList.map( 
+    //       async playerId => {
+    //         const player = await playerDao.getById(playerId);
+    //         player.order = (playerIndex + playerList.indexOf(playerId) +1) % playerList.length;
+    //         return playerDao.playerSetOrder(player);
+    //       }
+    //     )
+    //   )
+    // ).filter(Boolean);    
     if ( game.viewName === "setFirstPlayer" ) {
       game.viewName = "predict";
       game.handNumber +=1;
