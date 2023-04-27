@@ -20,15 +20,16 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       newPlayer.mistakeList = [];
       return newPlayer;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
   async playerSetOrder(player){
     try {      
+      console.log('playereSetOrder_: ', player);
       await db(this.collection).where('id',player.id).update(player);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -36,7 +37,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
     try {
       return await db(this.collection).select('*').where('gameId',gameId);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -56,7 +57,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       }
       return player
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

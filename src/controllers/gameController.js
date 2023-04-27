@@ -1,15 +1,9 @@
 import path from "path";
-import LRU from "lru-cache";
 import gameMapper from "../mappers/gameMapper.js";
 import handMapper from "../mappers/handMapper.js";
 import playerMapper from "../mappers/playerMapper.js";
 import { getCardQuantity } from "../utils/getCardQuantity.js";
 import Singleton from "../utils/Singleton.js";
-
-const cache = new LRU({
-  max: 500,
-  expires: 1000 * 60 * 60
-});
 
 const gameController = () => {};
 
@@ -25,7 +19,7 @@ gameController.getAll = async ( req, res ) => {
 
       let players = "Sin jugadores cargados";
       if (game.playerList.length) {
-        const playersList = await playerDao.getByIdList(game.playerList);
+        const playersList = await playerDao.getByGameId(game.id);
         players = [];
         players.push(playersList.map(player => player.name));
         players = players.join(", ") + ".";
@@ -41,7 +35,7 @@ gameController.getAll = async ( req, res ) => {
   }
 }
 
-gameController.create = async ( req, res ) => {
+gameController.create = async ( _req, res ) => {
   try {
     const gameId = await gameDao.createGame();
     res.redirect(`/game/${gameId}`);
@@ -99,7 +93,7 @@ gameController.setPlayers = async (req, res) => {
 gameController.getSetFirstPlayer = async (req,res) => {
   try {
     const gameId = req.params.id;
-    let playerList = await playerDao.getByGameId(gameId);
+    const playerList = await playerDao.getByGameId(gameId);
     const playerDtoList = [];
     playerList.forEach(p => playerDtoList.push( playerMapper.mapPlayerToPlayerDtoId(p) ) );
     
@@ -114,20 +108,17 @@ gameController.getSetFirstPlayer = async (req,res) => {
 gameController.setFirstPlayer = async ( req, res ) => {
   try {
     const gameId = req.body.gameId;
-    const FirstPlayerId = req.body.playerId;
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.body.gameId);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const FirstPlayerId = parseInt(req.body.playerId);
+    const game = await gameDao.getGameById(req.body.gameId);
     const playerList = game.playerList;
+    
     const playerIndex = playerList.findIndex(playerId  => playerId  === FirstPlayerId);
-    const updatedPlayers = ( 
+    const _updatedPlayers = ( 
       await Promise.all( 
         playerList.map( 
           async playerId => {
             const player = await playerDao.getById(playerId);
-            player.order = (playerIndex + playerList.indexOf(playerId) + 1) % playerList.length;
+            player.order = (playerIndex + playerList.indexOf(playerId) +1) % playerList.length;
             return playerDao.playerSetOrder(player);
           }
         )
@@ -137,7 +128,6 @@ gameController.setFirstPlayer = async ( req, res ) => {
       game.viewName = "predict";
       game.handNumber +=1;
       await gameDao.save(game);
-      // cache.set(req.body.gameId, game);
     }
     res.redirect(`/game/${gameId}`);
   } catch (err) {
@@ -149,11 +139,7 @@ gameController.setFirstPlayer = async ( req, res ) => {
 
 gameController.getPredict = async ( req , res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
     const handNumber = parseInt(game.handNumber);
     const playerList = game.playerList;
     const players = [];
@@ -182,11 +168,7 @@ gameController.getPredict = async ( req , res) => {
 
 gameController.predict = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.body.gameId);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.body.gameId);
     const playerIdList = req.body.players;
     for (const p of playerIdList) {
       const hand = {id: parseInt(p.handId), predict: parseInt(p.predict), handNumber: game.handNumber, playerId: p.playerId};
@@ -197,7 +179,6 @@ gameController.predict = async (req,res) => {
     }
     game.viewName = 'taken';
     await gameDao.save(game);
-    // cache.set(req.body.gameId, game);
     res.redirect(`/game/${req.body.gameId}`);
   } catch (err) {
     const message = err.message || "Ocurrio un error";
@@ -208,15 +189,10 @@ gameController.predict = async (req,res) => {
 
 gameController.getTaken = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
     const handNumber = parseInt(game.handNumber);
-    const playerList = await playerDao.getByIdList(game.playerList);
     const players = [];
-    for (const playerId of playerList) {
+    for (const playerId of game.playerList) {
       const player = await playerDao.getPlayerById(playerId);
       if(player.handList) {
         const handList = [];
@@ -241,11 +217,7 @@ gameController.getTaken = async (req,res) => {
 
 gameController.taken = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
     const game = await gameDao.getGameById(req.body.gameId);
-    //   cache.set(req.body.gameId, game);
-    // }
     const playerIdList = req.body.players;
     for (const p of playerIdList) {
       const hand = {id: parseInt(p.handId), take: parseInt(p.take)};
@@ -253,7 +225,6 @@ gameController.taken = async (req,res) => {
     }
     game.viewName = 'handPoints';
     await gameDao.save(game);
-    // cache.set(req.body.gameId, game);
     res.redirect(`/game/${req.body.gameId}`);
   } catch (err) {
     const message = err.message || "Ocurrio un error";
@@ -264,13 +235,8 @@ gameController.taken = async (req,res) => {
 
 gameController.getHandPoints = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
     const players = [];
-    const playerList = await playerDao.getByIdList(game.playerList);
     if(game.playerList.length){
       const playerList = game.playerList;
       for (const playerId of playerList) {
@@ -296,11 +262,7 @@ gameController.getHandPoints = async (req,res) => {
 
 gameController.endHand = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
     const playerIdList = game.playerList;
     for (const playerId of playerIdList) {
       const player = await playerDao.getPlayerById(playerId);
@@ -313,7 +275,6 @@ gameController.endHand = async (req,res) => {
     game.handNumber = handNumber;
     game.viewName = game.handNumber === 22 ? "endGame" : "predict";
     await gameDao.save(game);
-    // cache.set(req.body.gameId, game);
     res.redirect(`/game/${req.params.id}`);
   } catch (err) {
     const message = err.message || "Ocurrio un error";
@@ -326,11 +287,7 @@ gameController.getEndGame = (req,res) => res.redirect(`/game/${req.params.id}/ta
 
 gameController.getTablePoints = async (req,res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
     const playerIdList = game.playerList;
     
     const playerList = [];
@@ -345,7 +302,6 @@ gameController.getTablePoints = async (req,res) => {
           handList.push(handMapper.mapHandToHandDtoTablePoints({handNumber: hand.handNumber, predict:hand.predict,take: hand.take, points:hand.points}));
       }
       const mistakeIdList = player.mistakeList;
-      const mistakeList = [];
       for ( const mistakeId of mistakeIdList){
         const mistakeMade = await mistakeMadeDao.getById(mistakeId);
         const mistake = await mistakeDao.getById(mistakeMade.mistakeId);
@@ -370,11 +326,9 @@ gameController.getTablePoints = async (req,res) => {
 
 gameController.getAddMistake = async (req, res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+
+    const game = await gameDao.getGameById(req.params.id);
+
     const mistakeId = req.params.mistakeId;
     let mistake;
     if(mistakeId) mistake = await mistakeMadeDao.getById(mistakeId);
@@ -396,11 +350,8 @@ gameController.getAddMistake = async (req, res) => {
 gameController.addMistake = async (req,res) => {
   try {
     const restart = req.body.restartHand;
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
+
     const mistakeMade = await mistakeMadeDao.createMistakeMade(req.body);
     const player = await playerDao.getPlayerById(req.body.playerId);
     
@@ -410,7 +361,6 @@ gameController.addMistake = async (req,res) => {
       game.handNumber = parseInt(mistakeMade.handNumber);
       game.viewName = "predict";
       await gameDao.save(game);
-      // cache.set(req.body.gameId, game);
     }
     res.redirect(`/game/${req.params.id}`);
   } catch (err) {
@@ -422,11 +372,8 @@ gameController.addMistake = async (req,res) => {
 
 gameController.getMistakeList = async ( req, res) => {
   try {
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(req.params.id);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(req.params.id);
+
     const playerIdList = game.playerList;
     const mistakeMadeIdList = [];
     const mistakeMadeList = [];
@@ -475,11 +422,8 @@ gameController.deleteMistake = async ( req, res) => {
 gameController.deleteGame = async ( req, res ) => {
   try {
     const gameId = req.params.id;
-    // let game = cache.get(req.body.gameId);
-    // if (!game) {
-      const game = await gameDao.getGameById(gameId);
-      //   cache.set(req.body.gameId, game);
-      // }
+    const game = await gameDao.getGameById(gameId);
+
     if(game.playerList.length){
       const playerList = game.playerList;
       const players = [];
@@ -512,7 +456,6 @@ gameController.deleteGame = async ( req, res ) => {
     } 
     // Eliminamos el juego
     await gameDao.deleteById(gameId);
-    // cache.delete(req.body.gameId);
     res.redirect('/game/getAll');
   } catch (err) {
     const message = err.message || "Ocurrio un error";
