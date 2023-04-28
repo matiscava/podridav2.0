@@ -127,17 +127,6 @@ gameController.setFirstPlayer = async ( req, res ) => {
       await playerDao.playerSetOrder(player);
       order++;
     }
-    // const _updatedPlayers = ( 
-    //   await Promise.all( 
-    //     playerList.map( 
-    //       async playerId => {
-    //         const player = await playerDao.getById(playerId);
-    //         player.order = (playerIndex + playerList.indexOf(playerId) +1) % playerList.length;
-    //         return playerDao.playerSetOrder(player);
-    //       }
-    //     )
-    //   )
-    // ).filter(Boolean);    
     if ( game.viewName === "setFirstPlayer" ) {
       game.viewName = "predict";
       game.handNumber +=1;

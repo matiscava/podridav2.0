@@ -50,7 +50,6 @@ export default class SqliteContainer {
     try {
       await db(this.collection)
         .where('id',id).del()
-        .then(()=> console.log('Data deleted'));
     }catch (err) {
       let message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);

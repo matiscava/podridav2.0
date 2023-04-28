@@ -20,7 +20,7 @@
             <tr>
               <th><%= g.players %></th>
               <th><%= g.timestamp %></th>
-              <th><% if(g.handNumber === 22) {%>Finalizado<% }else{ %><%= g.handNumber%><% } %></th>
+              <th><% if(g.handNumber === 22) {%>Finalizado<% } else if (g.handNumber === 0){ %>Cargando Jugadores<% }else{ %><%= g.handNumber%><% } %></th>
               <td>
                 <div style="display: flex; justify-content: space-evenly; align-items: center;">
                   <button type="button" class="btn-load">

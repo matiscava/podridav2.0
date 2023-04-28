@@ -2,7 +2,9 @@
 <main>
   <div class="container">
     <h2><%= title %></h2>
-    <p class="problem none" id="problemText"></p>
+    <div class="spanContainer">
+      <span class="problem opacity-0" id="problemSpan"></span>
+    </div>
     <form action="/game/taken" method="post" class="formCards">
       <% playerList.forEach( (p,index) => { %>
         <div class="formElement">
@@ -17,8 +19,13 @@
         </div>
       <% }) %>
       <input type="hidden" name="gameId" value="<%= gameId %>">
-      <div class="formButtons">
-        <input class="menu-button input-btn" type="submit" value="Calcular Puntos" disabled>
+      <div class="formTakenButtons">
+        <div class="inlineContainer">
+          <div class="btnDiv disabled">
+            <div id="btnPercentage"></div>
+            <input id="input-submit" type="submit" value="Calcular Puntos" disabled>
+          </div>
+        </div>
         <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
         <input class="menu-button" type="button" onclick='location.href=`/game/<%=gameId%>/predict`' value="Editar pedidas">
       </div>

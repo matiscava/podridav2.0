@@ -15,7 +15,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
   async createPlayer(player) {
     try {
       const [id] = await db(this.collection).insert({name: player.name, gameId: player.gameId})
-      const newPlayer = await db('player').select().where('id', id).first();
+      const newPlayer = await db(this.collection).select().where('id', id).first();
       newPlayer.handList = [];
       newPlayer.mistakeList = [];
       return newPlayer;
@@ -26,7 +26,6 @@ export default class PlayerDaoSqlite extends SqliteContainer {
   }
   async playerSetOrder(player){
     try {      
-      console.log('playereSetOrder_: ', player);
       await db(this.collection).where('id',player.id).update(player);
     } catch (err) {
       const message = err || "Ocurrio un error";

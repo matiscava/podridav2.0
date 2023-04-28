@@ -1,9 +1,10 @@
 :root{
   --main-color: #a9a9a9;
-  --body-color: #e4e9c6;
+  --body-color: #fff;
   --second-color: #f8eaea;
   --third-color: rgb(78, 74, 128);
   --menu-color: #6786af;
+  --ok-color: rgb(47, 141, 44);
   --error-color: #f44336;
   --first-modal-color: rgba(34,34,34,0.85);
   --second-modal-color: rgba(223, 223, 223, 0.747);
@@ -146,6 +147,10 @@ p{
 }
 .none{
   display: none;
+}
+
+.opacity-0{
+  opacity: 0!important;
 }
 
 .problem {
@@ -390,6 +395,11 @@ p{
   align-items: baseline;
 }
 
+.formTakenButtons {
+  display: grid;
+  grid-template-columns: repeat(2,1fr) ;
+}
+
 .labelName{
   flex-grow: 1;
   margin-right: 10px;
@@ -617,7 +627,23 @@ table th{
 .form-input-text .label-container input[type="number"],
 .form-input-text .label-container input[type="text"] {
   flex-grow: 2;
-  margin-left: 5px;
+  margin-left: 5px; 
+}
+
+.form-input-text .label-container input[type="number"],
+.form-input-text .label-container input[type="text"]{
+  border: none;
+  border-bottom: 1px solid var(--main-color);
+  background-color: transparent;
+  padding: 0 10px;
+  line-height: 2rem;
+  font-size: 1.5rem;
+}
+.form-input-text .label-container input[type="number"]:focus-visible,
+.form-input-text .label-container input[type="text"]:focus-visible {
+  outline: none;
+  background-color: var(--second-modal-color);
+  font-size: 2rem;
 }
 
 /* HOME */
@@ -659,11 +685,132 @@ table th{
   text-shadow: 0 0 11px #9adbdb;
 }
 
+.submit-btn{
+  background-color: var(--ok-color);
+  border: solid 3px #256a23;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transform: all .3s;
+  border-radius: 20px;
+  padding: 1rem 2rem;
+  margin-top: 2rem;
+}
+.submit-btn:disabled{
+  background-color: rgb(172, 170, 170);
+  border-color: #666;
+  color: #666;
+  cursor: auto;
+}
+
+/* Boton de porcentaj para taken*/
+
+.btnDiv{
+  width: 8rem;
+  height: 2.5rem;
+  position: relative;
+  transition: .5s;
+  overflow: hidden;
+  background-color: var(--ok-color);
+  border-radius: 20px;
+}
+.btnDiv.disabled{
+  background-color: #666;
+}
+
+
+#btnPercentage{
+  position: absolute;
+  background-color: var(--ok-color);
+  top:-1px;
+  height: 104%;
+  width: 0%;
+  z-index: 1;
+  max-width: 100%;
+  transition: all .3s;
+  border-radius: 20px 0 0 20px;
+  border: 4px solid #256a23;
+  border-right: none ;
+}
+
+#btnPercentage.complete{
+  border-radius: 20px;
+  border: 4px solid #256a23;
+}
+#btnPercentage.error{
+  border-radius: 20px;
+  border: 4px solid #6b1607;
+  background-color: var(--error-color);
+}
+
+.inlineContainer{
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+}
+
+#input-submit{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.submit-btn:hover,
+#input-submit:hover {
+  opacity: .7;
+}
+
+#input-submit:disabled{
+  cursor: auto;
+  opacity: 1;
+}
+
+.btnOk{
+  animation: brnOkAnimation 2s ease-in 0s 1 normal forwards;
+}
+
 .mistake-button:hover {
   color: #dd7169;
   text-shadow: 0 0 11px #dd7169;
-
 }
+
+.spanContainer {
+  position: fixed;
+  bottom: 2rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  z-index: 5;
+}
+
+#problemSpan{
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--menu-color);
+  opacity: 1;
+  transition: opacity .3s;
+  max-width: 90%;
+}
+
+#problemSpan.error{
+  background-color: var(--error-color);
+}
+
+#problemSpan.active {
+  background-color: var(--ok-color);
+}
+
 
 @media screen and (max-width: 1000px) {
   #home{
@@ -714,4 +861,41 @@ table th{
 .panel-loader img {
   display: block;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 800px) {
+  .formTakenButtons {
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+
+
+@keyframes brnOkAnimation {
+	0% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+		transform-origin: center center;
+	}
+
+	10% {
+		animation-timing-function: ease-in;
+		transform: scale(0.91);
+	}
+
+	17% {
+		animation-timing-function: ease-out;
+		transform: scale(0.98);
+	}
+
+	33% {
+		animation-timing-function: ease-in;
+		transform: scale(0.87);
+	}
+
+	45% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+	}
 }

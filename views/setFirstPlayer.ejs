@@ -3,12 +3,14 @@
   <div class="container">
     <h2><%= title %></h2>
     <form action="/game/setFirstPlayer" method="post">
-      <label for="firstPlayer">Seleccione el primer jugador que será mano:</label>
-      <select name="playerId" id="firstPlayer">
-        <% playerList.forEach( p => { %>
-          <option value="<%= p.id %>"><%= p.name %></option>
-        <% }); %>
-      </select>
+      <div class="label-container">
+        <label for="firstPlayer">Seleccione el primer jugador que será mano:</label>
+        <select name="playerId" id="firstPlayer">
+          <% playerList.forEach( p => { %>
+            <option value="<%= p.id %>"><%= p.name %></option>
+          <% }); %>
+        </select>
+      </div>
       <input type="hidden" name="gameId" value="<%= gameId %>">
       <input type="submit" class="menu-button" value="Iniciar Juego">
     </form>

@@ -18,12 +18,12 @@ export default class MistakeMadeDaoSqlite extends SqliteContainer {
     try {
       if(element.id && parseInt(element.id) !== 0) {
         await db(this.collection).where('id', element.id).update(element);
-        return element.id;
+        return element;
       }else {
         delete element.id;
-        const result = await db(this.collection).insert(element)
-        console.log('MistakeMade Created');
-        return result.id;
+        const [id] = await db(this.collection).insert(element);
+        const result = await db(this.collection).select().where('id', id).first();
+        return result;
       }
     } catch (err) {
       let message = err || "Ocurrio un error";

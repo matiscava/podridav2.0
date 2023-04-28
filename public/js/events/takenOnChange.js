@@ -2,18 +2,61 @@ export default function takenOnChange() {
   const d = document,
     $inputsRadio = d.querySelectorAll("input[type='radio']"),
     $inputSubmit = d.querySelector("input[type='submit']"),
-    $problemText = d.getElementById("problemText");
+    $percentageDiv = d.getElementById('btnPercentage'),
+    $btnContainer = d.querySelector('.btnDiv'),
+    $problemSpan = d.getElementById("problemSpan");
     let takes = 0;
-
     function getTakeState(takes) {
-      if (takes !== cardLimit) {
-        $inputSubmit.disabled = true;
-        $problemText.classList.add("problem");
-        $problemText.classList.remove("none");
-        $problemText.textContent = "No pueden llevarse menos o más que la cantidad de cartas jugadas";
-      }else{
-        $problemText.classList.add("none");
+      if (takes === cardLimit) {
+        $percentageDiv.style.width = `100%`;
+        $percentageDiv.classList.add('complete');
+        $percentageDiv.classList.remove('error');
+
+        $btnContainer.classList.add('btnOk');
+
+        $problemSpan.innerHTML = "Ya puede terminar la mano"
+        $problemSpan.classList.remove('error');
+        $problemSpan.classList.remove('opacity-0');
+        $problemSpan.classList.add('active');
+        setTimeout(() => {
+          $problemSpan.classList.add('opacity-0');
+        },3000);
+
         $inputSubmit.disabled = false;
+
+      }else if(takes < cardLimit){
+        $inputSubmit.disabled = true;
+        let porcentaje = takes != 0 ? takes * 100 / cardLimit: 0;
+        
+        $percentageDiv.style.width = `${porcentaje}%`;
+        $percentageDiv.classList.remove('error');
+        $percentageDiv.classList.remove('complete');
+        
+        $btnContainer.classList.remove('btnOk');
+
+        $problemSpan.innerHTML = `Tienen que haber ${cardLimit} llevadas para poder continuar.`; 
+        $problemSpan.classList.remove('active');
+        $problemSpan.classList.remove('error');
+        $problemSpan.classList.remove('opacity-0');
+        setTimeout(() => {
+          $problemSpan.classList.add('opacity-0');
+        },3000);
+
+      } else {
+        $inputSubmit.disabled = true;
+
+        $percentageDiv.style.width = '100%';
+        $percentageDiv.classList.add('error');
+
+        $problemSpan.innerHTML = `No pueden llevarse mas de ${cardLimit}.`;
+        $problemSpan.classList.remove('active');
+        $problemSpan.classList.remove('opacity-0');
+        $problemSpan.classList.add('error');
+        setTimeout(() => {
+          $problemSpan.classList.add('opacity-0');
+        },3000);
+
+        $btnContainer.classList.remove('btnOk');
       }
     }
     $inputsRadio.forEach($radio => {

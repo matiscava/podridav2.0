@@ -22,7 +22,6 @@ export default class HandDaoSqlite extends SqliteContainer {
       } else {
         delete hand.id
         const result = await db(this.collection).insert(hand)
-        console.log('Hand Created');
         return result.id;
       }
     } catch (err) {
