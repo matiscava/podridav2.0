@@ -1,4 +1,3 @@
-import { timingSafeEqual } from 'crypto';
 import SqliteContainer from '../../containers/SqliteContainer.js';
 import db from '../../utils/databaseSqlite.js';
 
@@ -26,7 +25,7 @@ export default class GameDaoSqlite extends SqliteContainer {
       }
       return game;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);  
     }
   }
@@ -37,7 +36,7 @@ export default class GameDaoSqlite extends SqliteContainer {
       const [id] = await db(this.collection).insert({timestamp: timestamp})
       return id;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -53,7 +52,7 @@ export default class GameDaoSqlite extends SqliteContainer {
       }
     return true;    
   } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -67,7 +66,7 @@ export default class GameDaoSqlite extends SqliteContainer {
       }
     return gameList;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

@@ -4,6 +4,7 @@ import handMapper from "../mappers/handMapper.js";
 import playerMapper from "../mappers/playerMapper.js";
 import { getCardQuantity } from "../utils/getCardQuantity.js";
 import Singleton from "../utils/Singleton.js";
+import { log } from "console";
 
 const gameController = () => {};
 
@@ -16,15 +17,12 @@ gameController.getAll = async ( req, res ) => {
     if( ! (gameList instanceof Array) ) throw new Error('Juegos NO es un Array');
     const gameDtoList = [];
     for (const game of gameList) {
-
       let players = "Sin jugadores cargados";
       if (game.playerList.length) {
-        const playersList = await playerDao.getByGameId(game.id);
-        players = [];
-        players.push(playersList.map(player => player.name));
-        players = players.join(", ") + ".";
+        const playersList = await playerDao.getNameByGameId(game.id);
+        players = playersList.map(player => player.name).join(', ');
       }
-      const date = new Date(game.timestamp).toLocaleDateString();
+      const date = new Date(game.timestamp).toLocaleDateString("en-GB");
       gameDtoList.push(gameMapper.mapGameToGameDtoGetAll({id: game.id,players,timestamp:date,handNumber:game.handNumber}));
     }
   res.render(path.join(process.cwd(),'/views/gameList.ejs'), {title:"Juegos Guardados",gameId: req.params.id, gameList: gameDtoList});
@@ -126,18 +124,7 @@ gameController.setFirstPlayer = async ( req, res ) => {
       player.order = order;
       await playerDao.playerSetOrder(player);
       order++;
-    }
-    // const _updatedPlayers = ( 
-    //   await Promise.all( 
-    //     playerList.map( 
-    //       async playerId => {
-    //         const player = await playerDao.getById(playerId);
-    //         player.order = (playerIndex + playerList.indexOf(playerId) +1) % playerList.length;
-    //         return playerDao.playerSetOrder(player);
-    //       }
-    //     )
-    //   )
-    // ).filter(Boolean);    
+    }  
     if ( game.viewName === "setFirstPlayer" ) {
       game.viewName = "predict";
       game.handNumber +=1;
@@ -161,9 +148,11 @@ gameController.getPredict = async ( req , res) => {
       const player = await playerDao.getPlayerById(playerId);
       if(player.handList) {
         const handList = [];
+        console.log("Mano del juego: ", await handDao.getByPlayerIdAndHandNumber(playerId,handNumber));
         for (const handId of player.handList) {
           const hand = await handDao.getById(handId);
           handList.push(hand);
+          console.log(hand);
         }
         const hand = handList.find( h => h.handNumber === handNumber);
         if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);

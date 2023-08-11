@@ -18,7 +18,8 @@ export default class SqliteContainer {
         await db.schema.createTable(this.collection, this.collectionBuilder);
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
+      console.log("Estamos en problemas");
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -29,7 +30,7 @@ export default class SqliteContainer {
         .from(this.collection)
         .select()
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -41,7 +42,7 @@ export default class SqliteContainer {
                           .where('id',id).first()
       return rows || null;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -52,7 +53,7 @@ export default class SqliteContainer {
         .where('id',id).del()
         .then(()=> console.log('Data deleted'));
     }catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -65,7 +66,7 @@ export default class SqliteContainer {
       const rows = await db.from(this.collection).where('id',element.id).update(element);
       if(rows === 0) throw new Error(`El elemento id ${element.id} no fue encontrado`);
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }

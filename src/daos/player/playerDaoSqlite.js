@@ -26,7 +26,6 @@ export default class PlayerDaoSqlite extends SqliteContainer {
   }
   async playerSetOrder(player){
     try {      
-      console.log('playereSetOrder_: ', player);
       await db(this.collection).where('id',player.id).update(player);
     } catch (err) {
       const message = err || "Ocurrio un error";
@@ -56,6 +55,16 @@ export default class PlayerDaoSqlite extends SqliteContainer {
         player.mistakeList.push(mistake.id);
       }
       return player
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async getNameByGameId(gameId){
+    try {
+      const names = await db.select('name').from(this.collection).where('gameId',gameId);
+      return names;
     } catch (err) {
       const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);

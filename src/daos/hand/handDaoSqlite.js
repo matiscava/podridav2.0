@@ -26,7 +26,7 @@ export default class HandDaoSqlite extends SqliteContainer {
         return result.id;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
@@ -47,7 +47,17 @@ export default class HandDaoSqlite extends SqliteContainer {
       await db(this.collection).where('id', hand.id).update(currentHand);
       return hand.id;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async getByPlayerIdAndHandNumber(playerId, handNumber ){
+    try {
+      const params = {playerId : playerId, handNumber: handNumber};
+      return await db.raw(`select * from hand where playerId = :playerId and handNumber = :handNumber`, params);
+    } catch (err) {
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
