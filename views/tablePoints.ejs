@@ -41,7 +41,13 @@
             <% } %>
             <% if (i<21) {%> 
               <tr <% if (i>6 && i<14) {%>class="trMiddle"<%}%>>
-                <th scope="row"><%=i+1%></th>
+                <th scope="row"><%=i+1%><% if(playerList[0].handList[i] === undefined ) {%><%} else{%>
+                    <div class="btn-edit" style="display: inline;">
+                      <a href="/game/<%= gameId %>/editHand/<%= i+1 %>">
+                        <span class="icon-pencil"></span>
+                      </a>
+                    </div>
+                  <%}%></th>
                 <% playerList.forEach( p => { %>
                   <td scope="col" class="handTd"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  
                   <td scope="col" class="handTd thMiddle"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].take%><%}%></th>  

@@ -22,7 +22,6 @@ export default class MistakeMadeDaoSqlite extends SqliteContainer {
       }else {
         delete element.id;
         const result = await db(this.collection).insert(element)
-        console.log('MistakeMade Created');
         return result.id;
       }
     } catch (err) {

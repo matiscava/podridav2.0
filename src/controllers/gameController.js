@@ -148,11 +148,9 @@ gameController.getPredict = async ( req , res) => {
       const player = await playerDao.getPlayerById(playerId);
       if(player.handList) {
         const handList = [];
-        console.log("Mano del juego: ", await handDao.getByPlayerIdAndHandNumber(playerId,handNumber));
         for (const handId of player.handList) {
           const hand = await handDao.getById(handId);
           handList.push(hand);
-          console.log(hand);
         }
         const hand = handList.find( h => h.handNumber === handNumber);
         if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);

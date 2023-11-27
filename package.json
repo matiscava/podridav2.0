@@ -12,6 +12,7 @@
   "author": "matiscava",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.6.2",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
@@ -24,6 +25,8 @@
     "mongodb": "^4.13.0",
     "mongoose": "^6.9.0",
     "nodemon": "^2.0.20",
+    "redis": "^4.6.11",
+    "response-time": "^2.3.2",
     "sqlite3": "^5.1.6"
   },
   "repository": {
