@@ -37,7 +37,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       return await db(this.collection).select('*').where('gameId',gameId);
     } catch (err) {
       const message = err || "Ocurrio un error";
-      console.error(`Error ${err.status}: ${message}`);
+      console.error(`Error 66 ${err.status}: ${message}`);
     }
   }
 
@@ -58,6 +58,23 @@ export default class PlayerDaoSqlite extends SqliteContainer {
     } catch (err) {
       const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+
+  async updatePoints(newPlayerPoints){
+    try {
+      await db.transaction(async (trx) => {
+        // Actualizar los puntos en la tabla player
+        for (const playerPoint of newPlayerPoints) {
+          await trx(this.collection)
+            .where({ id: playerPoint.playerId })
+            .update({ score: playerPoint.score });
+        }
+      });
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error 14 ${err.status}: ${message}`);
     }
   }
 

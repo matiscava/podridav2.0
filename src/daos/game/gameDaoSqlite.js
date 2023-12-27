@@ -54,7 +54,7 @@ export default class GameDaoSqlite extends SqliteContainer {
     return true;    
   } catch (err) {
       let message = err || "Ocurrio un error";
-      console.error(`Error ${err.status}: ${message}`);
+      console.error(`Error 1231 ${err.status}: ${message}`);
     }
   }
 

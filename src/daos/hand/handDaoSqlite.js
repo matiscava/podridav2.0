@@ -9,7 +9,7 @@ export default class HandDaoSqlite extends SqliteContainer {
       tbl.integer('handNumber').defaultTo(0);
       tbl.integer('take').defaultTo(0);
       tbl.integer('points').defaultTo(0);
-      tbl.integer('playerId').unsigned()
+      tbl.integer('playerId').unsigned();
       tbl.foreign('playerId').references('player.id');
     })
   }
@@ -30,6 +30,19 @@ export default class HandDaoSqlite extends SqliteContainer {
     }
   }
 
+  async getByIdAndHandNumber(handId, handNumber) {
+    try {
+      const rows = await db.from(this.collection)
+                          .select()
+                          .where('id',id)
+                          .andWhere('handNumber', handNumber).first()
+      return rows || null;
+    } catch (err) {
+      let message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
   async setTakenAndPoints(hand) {
     try {
       const currentHand = await this.getById(hand.id);
@@ -45,6 +58,37 @@ export default class HandDaoSqlite extends SqliteContainer {
       currentHand.points = points;
       await db(this.collection).where('id', hand.id).update(currentHand);
       return hand.id;
+    } catch (err) {
+      let message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async createUpdateHand(handList) {
+    try {
+      await db.transaction(async (trx) => {
+        await trx.table(this.collection).insert(handList)
+      })
+    } catch (err) {
+      let message = err || "Ocurrio un error";
+      console.error(`Error createUpdateHand ${err.status}: ${message}`); 
+    }
+  }
+
+  async getPointsByIdPlayer(playerIdList){
+    try {
+      const result = await db.from('hand')
+      .whereIn('playerId', playerIdList)
+      .select('playerId')
+      .sum('points as score')
+      .groupBy('playerId');
+    
+      // Formatear el resultado en el formato deseado
+      const playerPoints = result.map(row => ({
+        playerId: row.playerId,
+        score: row.score || 0, // En caso de que no haya puntos para un jugador
+      }));
+      return playerPoints;
     } catch (err) {
       let message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 

@@ -11,6 +11,8 @@ gameRoute
   .post('/setPlayers', gameController.setPlayers)
   .get('/:id/setFirstPlayer', gameController.getSetFirstPlayer)
   .post('/setFirstPlayer', gameController.setFirstPlayer)
+  .get('/:id/hand', gameController.getHand)
+  .post('/hand',gameController.hand)
   .get('/:id/predict', gameController.getPredict)
   .post('/predict', gameController.predict)
   .get('/:id/taken', gameController.getTaken)
@@ -25,6 +27,5 @@ gameRoute
   .get('/:id/mistakeList', gameController.getMistakeList)
   .delete('/:id/deleteMistake/:mistakeId', gameController.deleteMistake)
   .delete('/delete/:id', gameController.deleteGame)
-  .get('/:id/hand', gameController.getHand)
 
 export default gameRoute;

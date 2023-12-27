@@ -385,7 +385,10 @@ p{
 .formElement {
   display: flex;
   width: 100%;
-  margin-bottom: 5px;
+  height: 2.5rem;
+  margin-bottom: 8px;
+  align-items: center;
+  justify-content: center;
 }
 .formButtons{
   display: flex;
@@ -400,10 +403,11 @@ p{
   grid-template-columns: repeat(2,1fr) ;
 }
 
+
 .labelName{
-  flex-grow: 1;
   margin-right: 10px;
   align-self: center;
+  text-align: right;
 }
 
 .radioPredict + label,
@@ -729,27 +733,24 @@ table th{
   max-width: 100%;
   transition: all .3s;
   border-radius: 20px 0 0 20px;
-  border: 4px solid #256a23;
   border-right: none ;
 }
 
 #btnPercentage.complete{
   border-radius: 20px;
-  border: 4px solid #256a23;
 }
 #btnPercentage.error{
   border-radius: 20px;
-  border: 4px solid #6b1607;
   background-color: var(--error-color);
 }
 
 .inlineContainer{
   grid-column: span 2;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
-#input-submit{
+#btnPoints{
   position: absolute;
   top: 0;
   bottom: 0;
@@ -761,21 +762,22 @@ table th{
   color: #fff;
   font-weight: 700;
   z-index: 2;
+  padding: 0;
 }
 
 .submit-btn:hover,
-#input-submit:hover {
-  opacity: .7;
+#btnPoints:hover {
+  opacity: .5;
 }
 
-#input-submit:disabled{
+#btnPoints:disabled{
   cursor: auto;
   opacity: 1;
 }
 
-.btnOk{
+/* .btnOk{
   animation: brnOkAnimation 2s ease-in 0s 1 normal forwards;
-}
+} */
 
 .mistake-button:hover {
   color: #dd7169;
@@ -860,7 +862,6 @@ table th{
 }
 
 .containerHand {
-  max-width: 1200px;
   min-width: 800px;
   background-color: white;
   width: 90%;
@@ -877,7 +878,6 @@ table th{
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  margin-left: 200%;
 }
 .playerList {
   width: 100%;
@@ -902,6 +902,7 @@ input[type=radio] {
 
 input[type=radio] + label {
   padding: 10px 14px;
+  font-weight: 600;
   cursor: pointer;
   border-radius: 50%;
   transition: background-color .3s;
@@ -920,7 +921,8 @@ input[type=radio]:checked + label:hover {
   background-color: #7d3c98;
 }
 
-input[type=button] {
+input[type=button],
+.button-submit {
   text-transform: capitalize;
   background-color: #7D3C98;
   border: none;
@@ -929,20 +931,76 @@ input[type=button] {
   border-radius: 25px;
   cursor: pointer;
   transition: .3s;
+  font-weight: 700;
+
 }
 
 
-input[type=button]:hover {
+input[type=button]:hover{
   opacity: .5;
 }
 
-input[type=button]:disabled {
+input[type=button]:disabled,.button-submit:disabled {
   background-color: #aaaaaa;
   cursor: default;
 }
 
-input[type=button]:disabled:hover {
+input[type=button]:disabled:hover,.button-submit:disabled:hover {
   opacity: 1;
+}
+
+/* Boton de puntos */
+
+#scoreContainer {
+  position: fixed;
+  inset: 0 0% 0% 94%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  transition: left .3s ease;
+}
+
+#scoreContainer.active {
+  left: 78%;
+}
+
+#btnPodium {
+  height: fit-content;
+  align-self: center;
+  background: gainsboro;
+  cursor: pointer;
+  padding: 1.2rem;
+  padding-right: 0.5rem;
+  border-radius: 50% 0 0 50%;
+  transition: .3s;
+}
+
+#btnPodium:hover {
+  opacity: .7;
+}
+
+#btnPodium img {
+  width: 3rem;
+}
+
+.playerScoreContainer {
+  background-color: var(--second-modal-color);
+  width: max-content;
+  padding: 0rem 3rem 0rem 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.playerScoreContainer ul {
+  margin: 0;
+  padding: 0;
+}
+
+.playerScoreContainer ul li{
+  list-style: none;
+  margin-bottom: 1rem;
+  white-space: nowrap;
 }
 
 /* LOADER */
@@ -968,7 +1026,7 @@ input[type=button]:disabled:hover {
 }
 
 
-@keyframes brnOkAnimation {
+@keyframes btnOkAnimation {
 	0% {
 		animation-timing-function: ease-out;
 		transform: scale(1);

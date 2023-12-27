@@ -80,12 +80,12 @@ gameController.setPlayers = async (req, res) => {
       const player = await playerDao.createPlayer({name: p.name,gameId: gameId})
       await gameDao.insertPlayer(player);
     }
-    await gameDao.insertPlayer(playerIdList,gameId);
+    // await gameDao.insertPlayer(playerIdList,gameId);
 
     res.redirect(`/game/${gameId}`);
   } catch (err) {
     const message = err.message || "Ocurrio un error";
-    console.error(`Error ${err.status}: ${message}`);
+    console.error(`Error 79878 ${err.status}: ${message}`);
     res.json({status: err.status,message});
   }
 }
@@ -100,7 +100,7 @@ gameController.getSetFirstPlayer = async (req,res) => {
     res.render(path.join(process.cwd(),'/views/setFirstPlayer.ejs'), {title:"Seleccione el jugador que inicia como mano",gameId: req.params.id, playerList: playerDtoList});
   } catch (err) {
     const message = err.message || "Ocurrio un error";
-    console.error(`Error ${err.status}: ${message}`);
+    console.error(`Error 48 ${err.status}: ${message}`);
     res.json({status: err.status,message});
   }
 }
@@ -144,8 +144,18 @@ gameController.getHand = async (req, res) => {
   try {
     const game = await gameDao.getGameById(req.params.id);
     const handNumber = parseInt(game.handNumber);
+    let playersOrder;
     const playerList = game.playerList;
     const players = [];
+
+    if (handNumber >= 1 && handNumber <= 7) {
+      playersOrder = handNumber - 1;
+    } else if (handNumber >= 8 && handNumber <= 14) {
+      playersOrder = handNumber - 8;
+    } else if (handNumber >= 15 && handNumber <= 21) {
+      playersOrder = handNumber - 15;
+    }
+
     for (const playerId of playerList) {
       const player = await playerDao.getPlayerById(playerId);
       if(player.handList) {
@@ -157,18 +167,62 @@ gameController.getHand = async (req, res) => {
         const hand = handList.find( h => h.handNumber === handNumber);
         if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
       }
-      // players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
       players.push(player);
     }
-    players.sort((a,b) => a.order - b.order);
+    const playerPoints = await handDao.getPointsByIdPlayer( game.playerList );
+    playerPoints.sort((a, b) => b.score - a.score);
+    const newPlayerPoints = playerPoints.map(p => ({
+      ...p,
+      name: players.find(player=> player.id === p.playerId).name || 'Error'
+    }))
+
+    const reorderedPlayerList = players.slice(playersOrder).concat(players.slice(0, playersOrder));
+
     const cardLimit = getCardQuantity(handNumber);
+
+    console.log(playerPoints);
     
-    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: players, cardLimit});
+    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: reorderedPlayerList,playerScore: newPlayerPoints, cardLimit});
 
 
   } catch (err) {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
+    res.json({status: err.status,message});
+  }
+}
+
+gameController.hand = async (req,res) => {
+  try {
+    const game = await gameDao.getGameById(req.body.gameId);
+    let handNumber = parseInt(game.handNumber);
+    const playerList = req.body.players;
+    const handList = [];
+    
+    for (const player of playerList) {
+      let hand;
+      player.handId 
+        ? hand = await handDao.getByIdAndHandNumber(player.handId, handNumber)
+        : hand = {
+          id: parseInt(player.handId),
+          take: parseInt(player.take),
+          predict : parseInt(player.predict),
+          playerId: parseInt(player.playerId),
+          points: parseInt(player.points),
+          handNumber
+        };
+        handList.push(hand);
+    }
+    await handDao.createUpdateHand(handList); 
+    const newPlayerPoints = await handDao.getPointsByIdPlayer( game.playerList );
+    await playerDao.updatePoints(newPlayerPoints);
+    game.handNumber++;
+    game.viewName = game.handNumber === 22 ? "endGame" : "hand";
+    await gameDao.save(game);
+    res.redirect(`/game/${req.body.gameId}`);
+  } catch (err) {
+    const message = err.message || "Ocurrio un error";
+    console.error(`Error 44 ${err.status}: ${message}`);
     res.json({status: err.status,message});
   }
 }

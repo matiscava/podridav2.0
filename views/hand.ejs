@@ -1,10 +1,24 @@
 <%- include('./components/head.ejs') %> 
 <main id="handMain">
-  <div class="containerHand">
+  <div id="scoreContainer">
+    <div id="btnPodium">
+      <img src="/assets/podium.svg" alt="Podio">
+
+    </div>
+    <div class="playerScoreContainer">
+      <ul>
+        <% playerScore.forEach( (p,index) => { %>
+          <li><%=index+1%>° <%=p.name%>: <%=p.score%>pts.</li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+  <div class="container containerHand">
     <div class="spanContainer">
       <span class="problem opacity-0" id="problemSpan"></span>
     </div>
-    <form action="/game/hand" method="post" class="formCards">
+    <h2><%= title %></h2>
+    <form action="/game/hand" method="post">
       <div class="handSlider">
         <div class="playerList">
           <p class="problem" id="problemText"></p>
@@ -13,12 +27,11 @@
             <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió:</label>
             <div class="input-container">
               <% for (let i = 0; i<=cardLimit;i++) {%>
-                <input type="radio" class="radioPredict none<% if(index===6) { %> lastPlayer<% } %>" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.predict && i==p.predict)|| i==0) { %> checked<% } %> >
+                <input type="radio" class="inputRequest none<% if(index===6) { %> lastPlayer<% } %>" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.predict && i==p.predict)|| i==0) { %> checked<% } %> >
                 <label for="predict-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
                 <% } %>  
             </div>
             <input type="hidden" name="[players][<%=index%>][playerId]" value="<%= p.id %>">
-            <input type="hidden" name="[players][<%=index%>][handId]" value="<%= p.handId %>">
             </div>
           <% }) %>
           <input type="button" value="Jugar" id="btnPlay">
@@ -26,10 +39,10 @@
         <div class="playerList">
           <% playerList.forEach( (p,index) => { %>
             <div class="formElement">
-              <label class="labelName" for="[players][<%=index%>][take]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió <%= p.predict %>, cuantas se llevó:</label>
+              <label class="labelName playerTaken" for="[players][<%=index%>][take]" data-name="<%= p.name %>" ><%=p.name %> pidió <%= p.predict %>, cuantas se llevó:</label>
               <div class="input-container">
                 <% for (let i = 0; i<=cardLimit;i++) {%>
-                  <input type="radio" class="radioTake none" name="[players][<%=index%>][take]" id="take-<%=p.id%>-<%=i%>" value="<%=i%>" <% if(i==p.take) { %> checked<% } %> >
+                  <input type="radio" class="inputTake none" name="[players][<%=index%>][take]" id="take-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.take &&i==p.take) || i==0) { %> checked<% } %> >
                   <label for="take-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
                 <% } %>  
               </div>
@@ -38,13 +51,12 @@
           <% }) %>
           <div class="formTakenButtons">
             <div class="inlineContainer">
+            <input type="button" id="btnReturnOne" value="volver">
               <div class="btnDiv disabled">
                 <div id="btnPercentage"></div>
-                <input id="input-submit" type="button" value="Calcular Puntos" disabled>
+                <input id="btnPoints" type="button" value="Calcular Puntos" disabled>
               </div>
             </div>
-            <a href="/game/<%= gameId %>/addMistake" class="menu-button mistake-button">It's a Mistake</a>
-            <input id="btnReturnTwo" class="menu-button" type="button" value="Editar pedidas">
           </div>
         </div>
         <div class="table-container">
@@ -58,21 +70,28 @@
               </tr>
             </thead>
             <tbody>
-              <% playerList.forEach( p => { %>
+              <% playerList.forEach( (p,index) => { %>
                 <tr>
                   <th><%= p.name %></th>
-                  <th><%= p.predict %></th>
-                  <th><%= p.take %></th>
-                  <th><%= p.points %></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <input type="hidden" name="[players][<%=index%>][points]" value="">
                 </tr>
               <% }) %>  
             </tbody>
           </table>
+          <input type="button" id="btnReturnTwo" value="volver">
+          <input class="button-submit" type="submit" value="Terminar Mano">
         </div>
       </div>
+      <input type="hidden" name="gameId" value="<%= gameId %>">
 
     </form>
   </div>
   </div>
 </main>
+<script>
+  const cardLimit = <%-JSON.stringify(cardLimit)%>;
+</script>
 <%- include('./components/footer.ejs')  %> 
