@@ -25,5 +25,6 @@ gameRoute
   .get('/:id/mistakeList', gameController.getMistakeList)
   .delete('/:id/deleteMistake/:mistakeId', gameController.deleteMistake)
   .delete('/delete/:id', gameController.deleteGame)
+  .get('/:id/hand', gameController.getHand)
 
 export default gameRoute;

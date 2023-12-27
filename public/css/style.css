@@ -414,7 +414,7 @@ p{
   padding: 4px 8px;
   transition: .3s ease-in-out;
 }
-
+/* 
 .radioPredict:checked + label,
 .radioTake:checked + label {
   color: var(--third-color);
@@ -422,13 +422,13 @@ p{
   border-radius: 45%;
   padding: 2px 6px;
   border: inset 2px rgb(34, 14, 212);
-}
-
+} */
+/* 
 .radioTake:checked + label {
   background-color: rgb(60, 221, 114);
   border-color: rgb(91, 168, 117);
   color: rgb(58, 116, 78);
-} 
+}  */
 
 @media screen and (max-width: 1000px) {
   .formCards .formElement {
@@ -703,7 +703,7 @@ table th{
   cursor: auto;
 }
 
-/* Boton de porcentaj para taken*/
+/* Boton de porcentaje para taken*/
 
 .btnDiv{
   width: 8rem;
@@ -847,6 +847,102 @@ table th{
     flex-grow: 0;
   }
  
+}
+
+/* Nuevo Form de Mano */
+
+#handMain {
+  background-color: #7d3c98;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerHand {
+  max-width: 1200px;
+  min-width: 800px;
+  background-color: white;
+  width: 90%;
+  max-height: fit-content;
+  margin: auto auto;
+  border-radius: 25px;
+  box-shadow: 0px 1px 10px 2px #32373a, inset 0px 2px 10px 4px #b095bb;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.handSlider {
+  width: 300%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin-left: 200%;
+}
+.playerList {
+  width: 100%;
+}
+
+.player {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 15px ;
+  justify-content: center;
+  line-height: 26px;
+}
+
+.player p {
+  margin-right: 20px;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+input[type=radio] + label {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color .3s;
+}
+
+input[type=radio]:checked + label {
+  background-color: #7d3c98;
+  color: white;
+}
+
+input[type=radio] + label:hover {
+  background-color: #dfabf5;
+  color: white;
+}
+input[type=radio]:checked + label:hover {
+  background-color: #7d3c98;
+}
+
+input[type=button] {
+  text-transform: capitalize;
+  background-color: #7D3C98;
+  border: none;
+  color: white;
+  padding: 12px 32px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+
+input[type=button]:hover {
+  opacity: .5;
+}
+
+input[type=button]:disabled {
+  background-color: #aaaaaa;
+  cursor: default;
+}
+
+input[type=button]:disabled:hover {
+  opacity: 1;
 }
 
 /* LOADER */

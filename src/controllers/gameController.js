@@ -128,11 +128,44 @@ gameController.setFirstPlayer = async ( req, res ) => {
       order++;
     }
     if ( game.viewName === "setFirstPlayer" ) {
-      game.viewName = "predict";
+      game.viewName = "hand";
       game.handNumber +=1;
       await gameDao.save(game);
     }
     res.redirect(`/game/${gameId}`);
+  } catch (err) {
+    const message = err.message || "Ocurrio un error";
+    console.error(`Error ${err.status}: ${message}`);
+    res.json({status: err.status,message});
+  }
+}
+
+gameController.getHand = async (req, res) => {
+  try {
+    const game = await gameDao.getGameById(req.params.id);
+    const handNumber = parseInt(game.handNumber);
+    const playerList = game.playerList;
+    const players = [];
+    for (const playerId of playerList) {
+      const player = await playerDao.getPlayerById(playerId);
+      if(player.handList) {
+        const handList = [];
+        for (const handId of player.handList) {
+          const hand = await handDao.getById(handId);
+          handList.push(hand);
+        }
+        const hand = handList.find( h => h.handNumber === handNumber);
+        if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
+      }
+      // players.push(playerMapper.mapPlayerToPlayerDtoPredict(player));
+      players.push(player);
+    }
+    players.sort((a,b) => a.order - b.order);
+    const cardLimit = getCardQuantity(handNumber);
+    
+    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: players, cardLimit});
+
+
   } catch (err) {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
