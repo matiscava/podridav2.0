@@ -18,10 +18,9 @@
       <span class="problem opacity-0" id="problemSpan"></span>
     </div>
     <h2><%= title %></h2>
-    <form action="/game/hand" method="post">
+    <form action="/game/hand" id="formHand" method="post">
       <div class="handSlider">
         <div class="playerList">
-          <p class="problem" id="problemText"></p>
           <% playerList.forEach( (p,index) => { %>
             <div class="formElement">
             <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió:</label>
@@ -34,7 +33,10 @@
             <input type="hidden" name="[players][<%=index%>][playerId]" value="<%= p.id %>">
             </div>
           <% }) %>
-          <input type="button" value="Jugar" id="btnPlay">
+          <div class="inlineContainer"> 
+            <a href="/game/<%= gameId %>/addMistake" class="mistake-button">It's a Mistake</a>
+            <input type="button" value="Jugar" id="btnPlay">
+          </div>
         </div>
         <div class="playerList">
           <% playerList.forEach( (p,index) => { %>
@@ -51,7 +53,8 @@
           <% }) %>
           <div class="formTakenButtons">
             <div class="inlineContainer">
-            <input type="button" id="btnReturnOne" value="volver">
+              <input type="button" id="btnReturnRequest" value="volver">
+              <a href="/game/<%= gameId %>/addMistake" class="mistake-button">It's a Mistake</a>
               <div class="btnDiv disabled">
                 <div id="btnPercentage"></div>
                 <input id="btnPoints" type="button" value="Calcular Puntos" disabled>
@@ -81,8 +84,11 @@
               <% }) %>  
             </tbody>
           </table>
-          <input type="button" id="btnReturnTwo" value="volver">
-          <input class="button-submit" type="submit" value="Terminar Mano">
+          <div class="inlineContainer">
+            <input type="button" id="btnReturnTake" value="volver">
+            <a href="/game/<%= gameId %>/addMistake" class="mistake-button">It's a Mistake</a>
+            <input class="button-submit" type="submit" value="Terminar Mano">
+          </div>
         </div>
       </div>
       <input type="hidden" name="gameId" value="<%= gameId %>">
@@ -94,4 +100,5 @@
 <script>
   const cardLimit = <%-JSON.stringify(cardLimit)%>;
 </script>
+<%- include('./components/loader.ejs') %>
 <%- include('./components/footer.ejs')  %> 

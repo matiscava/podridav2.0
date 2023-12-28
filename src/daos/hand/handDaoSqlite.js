@@ -34,7 +34,7 @@ export default class HandDaoSqlite extends SqliteContainer {
     try {
       const rows = await db.from(this.collection)
                           .select()
-                          .where('id',id)
+                          .where('id',handId)
                           .andWhere('handNumber', handNumber).first()
       return rows || null;
     } catch (err) {
@@ -71,13 +71,13 @@ export default class HandDaoSqlite extends SqliteContainer {
       })
     } catch (err) {
       let message = err || "Ocurrio un error";
-      console.error(`Error createUpdateHand ${err.status}: ${message}`); 
+      console.error(`Error ${err.status}: ${message}`); 
     }
   }
 
   async getPointsByIdPlayer(playerIdList){
     try {
-      const result = await db.from('hand')
+      const result = await db.from(this.collection)
       .whereIn('playerId', playerIdList)
       .select('playerId')
       .sum('points as score')

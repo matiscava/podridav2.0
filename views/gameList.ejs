@@ -1,6 +1,6 @@
 <%- include('./components/head.ejs') %> 
 <main>
-  <div class="container">
+  <div class="container containerHand">
     <h2><%= title %></h2>
     <div class="table-container">
       <table class="gameListTable">
@@ -41,6 +41,9 @@
         <% } %> 
         </tbody>
       </table>
+      <form action="/game/new" method="post" id="form-one-button">
+        <input class="menu-button" type="submit" value="Juego Nuevo">
+      </form>
     </div>
   </div>
 </main>

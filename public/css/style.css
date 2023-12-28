@@ -1,6 +1,6 @@
 :root{
   --main-color: #a9a9a9;
-  --body-color: #fff;
+  --body-color: #7d3c98;
   --second-color: #f8eaea;
   --third-color: rgb(78, 74, 128);
   --menu-color: #6786af;
@@ -8,6 +8,7 @@
   --error-color: #f44336;
   --first-modal-color: rgba(34,34,34,0.85);
   --second-modal-color: rgba(223, 223, 223, 0.747);
+  --disabled-background-color: #aaa;
 }
 
 @font-face {
@@ -127,10 +128,37 @@ h2 {
   text-align: center;
 }
 
+main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
 p{
   font-size: 1rem;
   margin: auto;
   text-align: center;
+}
+
+select {
+  border: none;
+  border-bottom: solid 1px var(--body-color);
+  color: var(--body-color);
+  transition: .3s;
+}
+
+
+select:hover {
+  color: white;
+  background-color: var(--body-color);
+  opacity: .7;
+}
+
+select>option {
+  background-color: white;
+  color: var(--body-color);
+  transition: .3s;
+
 }
 
 .container {
@@ -140,11 +168,17 @@ p{
   margin: 0 auto;
   text-align: center
 }
+
+.container ul li {
+  text-align: left;
+}
+
 .table-container {
   width: 100%;
   overflow: hidden;
   overflow-x: auto;
 }
+
 .none{
   display: none;
 }
@@ -277,11 +311,6 @@ p{
   transition: 0.3s;
 }
 
-/* .nav-menu li:hover,
-.nav-menu li:focus-within {
-  color: blueviolet;
-} */
-
 .nav-menu li.nav-li:focus-within a,
 .nav-menu li.nav-li li:focus-within a {
   outline: none;
@@ -408,7 +437,17 @@ p{
   margin-right: 10px;
   align-self: center;
   text-align: right;
+  white-space: nowrap;
+  width: 200px;
 }
+
+.input-container {
+  min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 
 .radioPredict + label,
 .radioTake + label{
@@ -457,7 +496,6 @@ p{
   margin: 1rem auto;
   font-size: 0.9em;
   font-family: sans-serif;
-  /* min-width: 400px; */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 table td,
@@ -614,8 +652,7 @@ table th{
 .form-input-text{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  /* min-width: 400px; */
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -676,17 +713,13 @@ table th{
   margin-top: 1rem;
   transition: .3s;
 }
+
 .menu-button:disabled {
   display: none;
 }
 
 .menu-button:disabled:hover {
   display: none;
-}
-
-.menu-button:hover{
-  color: #9adbdb;
-  text-shadow: 0 0 11px #9adbdb;
 }
 
 .submit-btn{
@@ -779,10 +812,10 @@ table th{
   animation: brnOkAnimation 2s ease-in 0s 1 normal forwards;
 } */
 
-.mistake-button:hover {
+/* .mistake-button:hover {
   color: #dd7169;
   text-shadow: 0 0 11px #dd7169;
-}
+} */
 
 .spanContainer {
   position: fixed;
@@ -854,7 +887,6 @@ table th{
 /* Nuevo Form de Mano */
 
 #handMain {
-  background-color: #7d3c98;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -862,11 +894,10 @@ table th{
 }
 
 .containerHand {
-  min-width: 800px;
   background-color: white;
   width: 90%;
-  max-height: fit-content;
-  margin: auto auto;
+  height: fit-content;
+  margin: 20px auto;
   border-radius: 25px;
   box-shadow: 0px 1px 10px 2px #32373a, inset 0px 2px 10px 4px #b095bb;
   padding: 20px;
@@ -909,7 +940,7 @@ input[type=radio] + label {
 }
 
 input[type=radio]:checked + label {
-  background-color: #7d3c98;
+  background-color: var(--body-color);
   color: white;
 }
 
@@ -918,13 +949,16 @@ input[type=radio] + label:hover {
   color: white;
 }
 input[type=radio]:checked + label:hover {
-  background-color: #7d3c98;
+  background-color: var(--body-color);
+
 }
 
 input[type=button],
-.button-submit {
+.menu-button,
+.button-submit,
+.mistake-button {
   text-transform: capitalize;
-  background-color: #7D3C98;
+  background-color: var(--body-color);
   border: none;
   color: white;
   padding: 12px 32px;
@@ -932,16 +966,23 @@ input[type=button],
   cursor: pointer;
   transition: .3s;
   font-weight: 700;
+  font-size: .8rem;
+}
 
+.mistake-button {
+  background-color: var(--error-color);
+  text-decoration: none;
 }
 
 
-input[type=button]:hover{
+input[type=button]:hover,
+.menu-button:hover,
+.mistake-button:hover{
   opacity: .5;
 }
 
 input[type=button]:disabled,.button-submit:disabled {
-  background-color: #aaaaaa;
+  background-color: var(--disabled-background-color);
   cursor: default;
 }
 

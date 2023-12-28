@@ -4,6 +4,8 @@ import handMapper from "../mappers/handMapper.js";
 import playerMapper from "../mappers/playerMapper.js";
 import { getCardQuantity } from "../utils/getCardQuantity.js";
 import Singleton from "../utils/Singleton.js";
+import sortPlayersByHandNumber from "../utils/sortPlayersByHandNumber.js";
+import sortPlayersByPoints from "../utils/sortPlayersByPoints.js";
 
 const gameController = () => {};
 
@@ -115,16 +117,12 @@ gameController.setFirstPlayer = async ( req, res ) => {
     let order = 0;
     for (let i = playerIndex; i < playerList.length; i++) {
       const playerId = playerList[i];
-      const player = await playerDao.getById(playerId); 
-      player.order = order;
-      await playerDao.playerSetOrder(player);
+      await playerDao.playerSetOrderById(playerId,order);
       order++;
     }
     for (let i = 0; i < playerIndex; i++) {
       const playerId = playerList[i];
-      const player = await playerDao.getById(playerId); 
-      player.order = order;
-      await playerDao.playerSetOrder(player);
+      await playerDao.playerSetOrderById(playerId,order);
       order++;
     }
     if ( game.viewName === "setFirstPlayer" ) {
@@ -144,47 +142,29 @@ gameController.getHand = async (req, res) => {
   try {
     const game = await gameDao.getGameById(req.params.id);
     const handNumber = parseInt(game.handNumber);
-    let playersOrder;
     const playerList = game.playerList;
     const players = [];
-
-    if (handNumber >= 1 && handNumber <= 7) {
-      playersOrder = handNumber - 1;
-    } else if (handNumber >= 8 && handNumber <= 14) {
-      playersOrder = handNumber - 8;
-    } else if (handNumber >= 15 && handNumber <= 21) {
-      playersOrder = handNumber - 15;
-    }
 
     for (const playerId of playerList) {
       const player = await playerDao.getPlayerById(playerId);
       if(player.handList) {
-        const handList = [];
+        const hand = [];
         for (const handId of player.handList) {
-          const hand = await handDao.getById(handId);
-          handList.push(hand);
+          let response = await handDao.getByIdAndHandNumber(handId, handNumber);
+          if(response) hand.push(...response);
         }
-        const hand = handList.find( h => h.handNumber === handNumber);
         if ( hand ) player.handList = handMapper.mapHandToHandDtoPredict(hand);
       }
       players.push(player);
     }
-    const playerPoints = await handDao.getPointsByIdPlayer( game.playerList );
-    playerPoints.sort((a, b) => b.score - a.score);
-    const newPlayerPoints = playerPoints.map(p => ({
-      ...p,
-      name: players.find(player=> player.id === p.playerId).name || 'Error'
-    }))
 
-    const reorderedPlayerList = players.slice(playersOrder).concat(players.slice(0, playersOrder));
+    const playerListSortedByPoints = sortPlayersByPoints(await handDao.getPointsByIdPlayer( game.playerList ),await mistakeMadeDao.getPointsByIdPlayer( game.playerList ) ,players)
 
-    const cardLimit = getCardQuantity(handNumber);
+    const playerListSortedByHandNumber = sortPlayersByHandNumber(players,handNumber);
 
-    console.log(playerPoints);
-    
-    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: reorderedPlayerList,playerScore: newPlayerPoints, cardLimit});
+    const cardLimit = getCardQuantity(handNumber);    
 
-
+    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: playerListSortedByHandNumber,playerScore: playerListSortedByPoints, cardLimit});
   } catch (err) {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
@@ -216,7 +196,7 @@ gameController.hand = async (req,res) => {
     await handDao.createUpdateHand(handList); 
     const newPlayerPoints = await handDao.getPointsByIdPlayer( game.playerList );
     await playerDao.updatePoints(newPlayerPoints);
-    game.handNumber++;
+    game.handNumber == handNumber && game.handNumber++;
     game.viewName = game.handNumber === 22 ? "endGame" : "hand";
     await gameDao.save(game);
     res.redirect(`/game/${req.body.gameId}`);
@@ -463,23 +443,7 @@ gameController.addMistake = async (req,res) => {
 gameController.getMistakeList = async ( req, res) => {
   try {
     const game = await gameDao.getGameById(req.params.id);
-
-    const playerIdList = game.playerList;
-    const mistakeMadeIdList = [];
-    const mistakeMadeList = [];
-    for (const playerId of playerIdList) {
-      const player = await playerDao.getPlayerById(playerId);
-      if(player.mistakeList.length){
-        mistakeMadeIdList.push(...player.mistakeList);
-      }
-    }
-
-    for (const mistakeMadeId of  mistakeMadeIdList) {
-      const mistakeMade = await mistakeMadeDao.getById(mistakeMadeId)
-      const mistake = await mistakeDao.getById(mistakeMade.mistakeId);
-      const player = await playerDao.getById(mistakeMade.playerId);
-      mistakeMadeList.push({name: player.name, mistake: mistake.mistake, points:mistake.points,...mistakeMade})
-    }
+    const mistakeMadeList = await mistakeMadeDao.getMistakeMadeByPlayersIdList(game.playerList);
     res.render(path.join(process.cwd(),'/views/mistakeGameList.ejs'), {title: "Mistake de la partida",gameId: req.params.id, mistakeMadeList});
 
   } catch (err) {

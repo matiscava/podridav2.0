@@ -37,7 +37,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       return await db(this.collection).select('*').where('gameId',gameId);
     } catch (err) {
       const message = err || "Ocurrio un error";
-      console.error(`Error 66 ${err.status}: ${message}`);
+      console.error(`Error ${err.status}: ${message}`);
     }
   }
 
@@ -74,7 +74,23 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       });
     } catch (err) {
       const message = err || "Ocurrio un error";
-      console.error(`Error 14 ${err.status}: ${message}`);
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async playerSetOrderById(playerId, order) {
+    try {
+      const updatedPlayer = await db(this.collection)
+        .where({ id: playerId })
+        .update({ order: order })
+        .returning('*');
+
+      if (!updatedPlayer.length ) {
+        throw new Error('No se encontró el jugador con el ID especificado.')
+      } 
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
     }
   }
 

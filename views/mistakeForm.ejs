@@ -1,5 +1,5 @@
 <%- include('./components/head.ejs')  %>
-<div class="container">
+<div class="container containerHand">
   <h2><%= title %></h2>
   <form action="/mistake/create" method="post" class="form-input-text">
     <div class="label-container"><label for="mistake-input">Nombre:</label><input type="text" name="mistake" id="mistake-input" value="<% if(typeof mistake != "undefined"){  %><%= mistake.mistake %><% } %>" required></div>
