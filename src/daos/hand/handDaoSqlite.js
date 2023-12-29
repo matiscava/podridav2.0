@@ -25,7 +25,7 @@ export default class HandDaoSqlite extends SqliteContainer {
         return result.id;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
@@ -38,7 +38,7 @@ export default class HandDaoSqlite extends SqliteContainer {
                           .andWhere('handNumber', handNumber).first()
       return rows || null;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
@@ -59,7 +59,7 @@ export default class HandDaoSqlite extends SqliteContainer {
       await db(this.collection).where('id', hand.id).update(currentHand);
       return hand.id;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
@@ -70,12 +70,12 @@ export default class HandDaoSqlite extends SqliteContainer {
         await trx.table(this.collection).insert(handList)
       })
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
   }
 
-  async getPointsByIdPlayer(playerIdList){
+  async getPointsByIdPlayerList(playerIdList){
     try {
       const result = await db.from(this.collection)
       .whereIn('playerId', playerIdList)
@@ -90,8 +90,22 @@ export default class HandDaoSqlite extends SqliteContainer {
       }));
       return playerPoints;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async getPointsByIdPlayer(playerId) {
+    try {
+      const result = await db.from(this.collection)
+      .where('playerId', playerId)
+      .select('playerId')
+      .sum('points as score')
+      .groupBy('playerId');
+      return result.length ? result[0].score : 0;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error 55 ${err.status}: ${message}`); 
     }
   }
 

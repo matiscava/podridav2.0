@@ -13,9 +13,7 @@ export default function handHandlerForm () {
   $tableTrList = d.querySelectorAll('table tbody tr'),
   lastPlayerName = d.querySelector("label[data-name]").getAttribute('data-name'),
   $percentageDiv = d.getElementById('btnPercentage'),
-  $problemSpan = d.getElementById("problemSpan"),
-  $btnPodium = d.getElementById('btnPodium'),
-  $scoreContainer = d.getElementById('scoreContainer');
+  $problemSpan = d.getElementById("problemSpan");
 
   let requested=0,requestedLastPlayer=0,taken = 0;
 
@@ -151,7 +149,9 @@ $inputsRadioTake.forEach($radio => {
   // eventos
 
   $btnPlayHand.addEventListener('click', (e) => {
-    $handSlider.style.marginLeft = '-100%';
+    // $handSlider.style.marginLeft = '-100%';
+    $handSlider.children[0].classList.add('none');
+    $handSlider.children[1].classList.remove('none');
     taken = 0;
     editPlayerTakenText()
     $inputsRadioTake.forEach($radio => {
@@ -161,17 +161,20 @@ $inputsRadioTake.forEach($radio => {
   })
 
   $btnPoints.addEventListener('click', (e) => {
-    $handSlider.style.marginLeft = '-200%';
+    $handSlider.children[1].classList.add('none');
+    $handSlider.children[2].classList.remove('none');
     setTable();
   })
 
   $btnReturnRequest.addEventListener('click', (e) => {
-    $handSlider.style.marginLeft = 0;
+    $handSlider.children[0].classList.remove('none');
+    $handSlider.children[1].classList.add('none');
     getPredictState();
   } )
 
   $btnReturnTake.addEventListener('click', (e) => {
-    $handSlider.style.marginLeft = '-100%';
+    $handSlider.children[1].classList.remove('none');
+    $handSlider.children[2].classList.add('none');
   })
 
 
@@ -196,16 +199,8 @@ $inputsRadioTake.forEach($radio => {
     })
   });
 
-  $btnPodium.addEventListener('click', (e) => {
-    if($scoreContainer.classList.contains('active')) {
-      $scoreContainer.classList.remove('active');
-    } else {
-      $scoreContainer.classList.add('active');
-    }
-  })
 
   d.getElementById("formHand").addEventListener('submit', () => {
-    console.log('holas');
     d.querySelector(".panel-loader").classList.add("is-active")
   })
 

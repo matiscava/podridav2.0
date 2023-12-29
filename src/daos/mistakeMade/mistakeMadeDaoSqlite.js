@@ -26,14 +26,14 @@ export default class MistakeMadeDaoSqlite extends SqliteContainer {
         return result;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);    
     }
   }
 
   async getMistakeMadeByPlayersIdList(playerIdList){
     try {
-      const result = await db.from('mistakeMade as mm')
+      const result = await db.from(`${this.collection} as mm`)
         .join('mistake as m', 'mm.mistakeId', 'm.id')
         .join('player', 'mm.playerId', 'player.id') // Agregamos una unión con la tabla 'player'
         .whereIn('mm.playerId', playerIdList)
@@ -51,12 +51,12 @@ export default class MistakeMadeDaoSqlite extends SqliteContainer {
 
       return mistakeMadeInfo;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);
     }
   }
 
-  async getPointsByIdPlayer(playerIdList){
+  async getPointsByIdPlayerList(playerIdList){
     try {
       const result = await db.from(`${this.collection} as mm`)
       .join('mistake as m', 'mm.mistakeId', 'm.id')
@@ -72,8 +72,25 @@ export default class MistakeMadeDaoSqlite extends SqliteContainer {
       }));
       return playerPoints;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
     }
+  }
+
+  async getPointsByIdPlayer (playerId) {
+    try{
+
+    const result = await db.from(`${this.collection} as mm`)
+      .join('mistake as m', 'mm.mistakeId', 'm.id')
+      .where('mm.playerId', playerId)
+      .select('mm.playerId')
+      .sum('m.points as score')
+      .groupBy('mm.playerId');
+
+    return result.length ? result[0].score : 0;
+  } catch (err) {
+    const message = err || "Ocurrio un error";
+    console.error(`Error ${err.status}: ${message}`); 
+  }
   }
 }

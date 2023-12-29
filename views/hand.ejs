@@ -38,7 +38,7 @@
             <input type="button" value="Jugar" id="btnPlay">
           </div>
         </div>
-        <div class="playerList">
+        <div class="playerList none">
           <% playerList.forEach( (p,index) => { %>
             <div class="formElement">
               <label class="labelName playerTaken" for="[players][<%=index%>][take]" data-name="<%= p.name %>" ><%=p.name %> pidió <%= p.predict %>, cuantas se llevó:</label>
@@ -62,7 +62,7 @@
             </div>
           </div>
         </div>
-        <div class="table-container">
+        <div class="table-container none">
           <table class="handPointsTable">
             <thead>
               <tr>
@@ -92,6 +92,7 @@
         </div>
       </div>
       <input type="hidden" name="gameId" value="<%= gameId %>">
+      <input type="hidden" name="handNumber" value="<%= handNumber %>">
 
     </form>
   </div>

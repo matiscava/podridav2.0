@@ -1,5 +1,5 @@
 <%- include('./components/head.ejs') %>
-<main>
+<main class="marginTop60px">
   <div class="container containerHand">
     <h2><%= title %></h2>
     <button id="btn-export-to-excel">Exportar a Excel<span class="icon-file-excel"></span></button>
@@ -41,7 +41,15 @@
             <% } %>
             <% if (i<21) {%> 
               <tr <% if (i>6 && i<14) {%>class="trMiddle"<%}%>>
-                <th scope="row"><%=i+1%></th>
+                <th scope="row"><%=i+1%>                  
+                  <%if ((i+1)<handNumber ) { %>
+                    <button type="button" class="btn-edit">
+                    <a href="/game/<%= gameId %>/hand/edit?handNumber=<%= i+1 %>">
+                      <span class="icon-pencil"></span>
+                    </a>
+                  </button>
+                <% } %>
+              </th>
                 <% playerList.forEach( p => { %>
                   <td scope="col" class="handTd"><% if(p.handList[i] === undefined ) {%><%} else{%><%=p.handList[i].predict%><%}%></th>  
                   <td scope="col" class="handTd thMiddle"><% if(p.handList[i] === undefined) {%><%} else{%><%=p.handList[i].take%><%}%></th>  
