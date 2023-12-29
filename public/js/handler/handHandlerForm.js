@@ -163,6 +163,7 @@ $inputsRadioTake.forEach($radio => {
   $btnPoints.addEventListener('click', (e) => {
     $handSlider.children[1].classList.add('none');
     $handSlider.children[2].classList.remove('none');
+    $problemSpan.classList.add('opacity-0');
     setTable();
   })
 
