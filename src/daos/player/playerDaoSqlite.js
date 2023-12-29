@@ -2,6 +2,7 @@ import SqliteContainer from '../../containers/SqliteContainer.js';
 import db from '../../utils/databaseSqlite.js';
 
 export default class PlayerDaoSqlite extends SqliteContainer {
+
   constructor() {
     super('player', (tbl) => {
       tbl.increments('id').primary();
@@ -12,6 +13,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       tbl.foreign('gameId').references('game.id');
     })
   }
+
   async createPlayer(player) {
     try {
       const [id] = await db(this.collection).insert({name: player.name, gameId: player.gameId})
@@ -24,6 +26,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       console.error(`Error ${err.status}: ${message}`);
     }
   }
+
   async playerSetOrder(player){
     try {      
       await db(this.collection).where('id',player.id).update(player);
@@ -32,6 +35,7 @@ export default class PlayerDaoSqlite extends SqliteContainer {
       console.error(`Error ${err.status}: ${message}`);
     }
   }
+
   async getByGameId(gameId){
     try {
       return await db(this.collection).select('*').where('gameId',gameId);
@@ -55,6 +59,80 @@ export default class PlayerDaoSqlite extends SqliteContainer {
         player.mistakeList.push(mistake.id);
       }
       return player
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async updatePoints(newPlayerPoints){
+    try {
+      await db.transaction(async (trx) => {
+        // Actualizar los puntos en la tabla player
+        for (const playerPoint of newPlayerPoints) {
+          await trx(this.collection)
+            .where({ id: playerPoint.playerId })
+            .update({ score: playerPoint.score });
+        }
+      });
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async playerSetOrderById(playerId, order) {
+    try {
+      const updatedPlayer = await db(this.collection)
+        .where({ id: playerId })
+        .update({ order: order })
+        .returning('*');
+
+      if (!updatedPlayer.length ) {
+        throw new Error('No se encontró el jugador con el ID especificado.')
+      } 
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async createPlayersAndReturnIds (playersNameList, gameId) {
+    try {
+
+      for (const playerData of playersNameList) {
+        await db(this.collection).insert({name: playerData.name, gameId: gameId})
+      }
+
+      
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
+
+  async getPlayersByGameIdAndHandNumber (gameId, handNumber) {
+    try {
+      const playersList = await db(`${this.collection}`)
+      .select(
+        `${this.collection}.*`,
+        db.raw('coalesce(hand.predict, 0) as predict'),
+        db.raw('coalesce(hand.take, 0) as take'),
+        db.raw('coalesce(hand.points, 0) as points'),
+        db.raw('coalesce(hand.id, "") as handId')
+      )
+      .leftJoin('hand', function() {
+        this.on(`player.id`, '=', 'hand.playerId')
+          .andOn('hand.handNumber', '=', handNumber)
+      })
+      .where(`${this.collection}.gameId`, gameId);
+
+      if (!playersList.length) {
+        throw new Error('No hay resultados para el handNumber especificado');
+      }
+
+      return playersList;
+
     } catch (err) {
       const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`);

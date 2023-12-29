@@ -1,6 +1,6 @@
 <%- include('./components/head.ejs')  %>
 <main>
-  <div class="container">
+  <div class="container containerHand">
     <h2><%= title %></h2>
     <form action="/game/<%=gameId %>/addMistake" method="post" class="form-input-text">
       <div class="label-container">
@@ -21,14 +21,18 @@
       </div>
       <div class="label-container">
         <label for="">¿Se reinicia la mano?</label>
-        <input type="radio" name="restartHand" id="restart-true" value=true><label for="restart-true">Si</label>
-        <input type="radio" name="restartHand" id="restart-false" value=false checked><label for="restart-false">No</label>
+        <div class="input-container">
+          <input type="radio" name="restartHand" id="restart-true" value=true><label for="restart-true">Si</label>
+          <input type="radio" name="restartHand" id="restart-false" value=false checked><label for="restart-false">No</label>
+        </div>
       </div>
-      <div class="label-container"><label for="hand-input">Mano: </label><input type="number" name="handNumber" min="1" max="21" id="hand-input" value="<% if(typeof mistake != "undefined"){  %><%= mistake.handNumber %><% }else{ %><%=handNumber%><% } %>" required></div>
-      <input type="hidden" name="id" value="<% if(typeof mistake != "undefined"){  %><%= mistake.id %><% }else{ %>0<% } %>">
-      <input type="submit" value="Cargar Mistake" class="menu-button">
+      <div class="label-container"><label for="hand-input">Mano: </label><input type="number" name="handNumber" min="1" max="<%= handNumber %>" id="hand-input" value="<% if(typeof mistake != "undefined"){  %><%= mistake.handNumber %><% }else{ %><%=handNumber%><% } %>" required></div>
+      <div class="inlineContainer"> 
+        <a class="menu-button" href="/game/<%= gameId %>">Volver a la partida</a>
+        <input type="hidden" name="id" value="<% if(typeof mistake != "undefined"){  %><%= mistake.id %><% }else{ %>0<% } %>">
+        <input type="submit" value="Cargar Mistake" class="menu-button">
+      </div>  
     </form>
-    <a class="menu-button" href="/game/<%= gameId %>">Volver a la partida</a>
 
   </div>
 </main> 

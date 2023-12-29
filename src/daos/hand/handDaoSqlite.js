@@ -9,7 +9,7 @@ export default class HandDaoSqlite extends SqliteContainer {
       tbl.integer('handNumber').defaultTo(0);
       tbl.integer('take').defaultTo(0);
       tbl.integer('points').defaultTo(0);
-      tbl.integer('playerId').unsigned()
+      tbl.integer('playerId').unsigned();
       tbl.foreign('playerId').references('player.id');
     })
   }
@@ -25,8 +25,21 @@ export default class HandDaoSqlite extends SqliteContainer {
         return result.id;
       }
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async getByIdAndHandNumber(handId, handNumber) {
+    try {
+      const rows = await db.from(this.collection)
+                          .select()
+                          .where('id',handId)
+                          .andWhere('handNumber', handNumber).first()
+      return rows || null;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
     }
   }
 
@@ -46,8 +59,53 @@ export default class HandDaoSqlite extends SqliteContainer {
       await db(this.collection).where('id', hand.id).update(currentHand);
       return hand.id;
     } catch (err) {
-      let message = err || "Ocurrio un error";
+      const message = err || "Ocurrio un error";
       console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async createUpdateHand(handList) {
+    try {
+      await db.transaction(async (trx) => {
+        await trx.table(this.collection).insert(handList)
+      })
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async getPointsByIdPlayerList(playerIdList){
+    try {
+      const result = await db.from(this.collection)
+      .whereIn('playerId', playerIdList)
+      .select('playerId')
+      .sum('points as score')
+      .groupBy('playerId');
+    
+      // Formatear el resultado en el formato deseado
+      const playerPoints = result.map(row => ({
+        playerId: row.playerId,
+        score: row.score || 0, // En caso de que no haya puntos para un jugador
+      }));
+      return playerPoints;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`); 
+    }
+  }
+
+  async getPointsByIdPlayer(playerId) {
+    try {
+      const result = await db.from(this.collection)
+      .where('playerId', playerId)
+      .select('playerId')
+      .sum('points as score')
+      .groupBy('playerId');
+      return result.length ? result[0].score : 0;
+    } catch (err) {
+      const message = err || "Ocurrio un error";
+      console.error(`Error 55 ${err.status}: ${message}`); 
     }
   }
 

@@ -71,4 +71,13 @@ export default class GameDaoSqlite extends SqliteContainer {
       console.error(`Error ${err.status}: ${message}`);
     }
   }
+
+  async associatePlayersWithGame (gameId) {
+    try {
+      await db(this.collection).where('id', gameId).update({viewName: 'setFirstPlayer'});
+    } catch (err) {
+      let message = err || "Ocurrio un error";
+      console.error(`Error ${err.status}: ${message}`);
+    }
+  }
 }
