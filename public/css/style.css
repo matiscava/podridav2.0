@@ -162,6 +162,12 @@ select>option {
 
 }
 
+.backgroundColorThirdColor,
+.backgroundColorThirdColor::before,
+.backgroundColorThirdColor::after {
+  background-color: var(--third-color);
+}
+
 .marginTop60px {
   margin-top: 60px;
 }
@@ -250,8 +256,7 @@ select>option {
   display: none;
   justify-content: center;
   align-items: center;
-  background-color: var(--menu-color);
-  border: 1px solid var(--second-color);
+  background-color: var(--main-color);
   transition: .3s;
 }
 
@@ -1023,6 +1028,7 @@ input[type=button]:disabled:hover,.button-submit:disabled:hover {
   height: 100%;
   display: flex;
   flex-direction: row;
+  z-index: 6;
 }
 
 .transition3sLeft {
