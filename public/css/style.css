@@ -1141,6 +1141,10 @@ input[type=button]:disabled:hover,.button-submit:disabled:hover {
   white-space: nowrap;
 }
 
+.text-justify {
+  text-align: justify;
+}
+
 /* LOADER */
 
 .panel-loader {
