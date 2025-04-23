@@ -6,9 +6,16 @@
 
     </div>
     <div class="playerScoreContainer">
-      <ul>
+      <ul id="playersScoreList">
         <% playerScore.forEach( (p,index) => { %>
-          <li><%=index+1%>° <%=p.name%>: <%=p.score%>pts.</li>
+          <li
+            data-id="<%= p.playerId %>" 
+            data-game="<%= gameId %>"
+            class="<% if(p.playerId == firstPlayerId && showCrown ) { %>crowned<% } %>"
+            >
+            <%=index+1%>° <%=p.name%>: <%=p.score%>pts.
+            <span class="crown-icon <% if(!(p.playerId == firstPlayerId && showCrown) ) { %>d-none<% } %>" >👑</span>
+        </li>
         <% }) %>
       </ul>
     </div>
@@ -23,7 +30,7 @@
         <div class="playerList">
           <% playerList.forEach( (p,index) => { %>
             <div class="formElement">
-            <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><%=p.name %> pidió:</label>
+            <label class="labelName" for="[players][<%=index%>][predict]"<% if(index==6) { %> data-name="<%= p.name %>" <% } %> ><span class="text-bold"><%=p.name %></span> pidió:</label>
             <div class="input-container">
               <% for (let i = 0; i<=cardLimit;i++) {%>
                 <input type="radio" class="inputRequest none<% if(index===6) { %> lastPlayer<% } %>" name="[players][<%=index%>][predict]" id="predict-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.predict && i==p.predict)|| i==0) { %> checked<% } %> >
@@ -41,10 +48,10 @@
         <div class="playerList none">
           <% playerList.forEach( (p,index) => { %>
             <div class="formElement">
-              <label class="labelName playerTaken" for="[players][<%=index%>][take]" data-name="<%= p.name %>" ><%=p.name %> pidió <%= p.predict %>, cuantas se llevó:</label>
+              <label class="labelName playerTaken" for="[players][<%=index%>][take]" data-name="<%= p.name %>" ><span class="text-bold"><%=p.name %></span> pidió <%= p.predict %>, cuantas se llevó:</label>
               <div class="input-container">
                 <% for (let i = 0; i<=cardLimit;i++) {%>
-                  <input type="radio" class="inputTake none" name="[players][<%=index%>][take]" id="take-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.take &&i==p.take) || i==0) { %> checked<% } %> >
+                  <input type="radio" class="inputTake none" name="[players][<%=index%>][take]" data-player="<%= p.name %>" id="take-<%=p.id%>-<%=i%>" value="<%=i%>" <% if((p.take &&i==p.take) || i==0) { %> checked<% } %> >
                   <label for="take-<%=p.id%>-<%=i%>"><%=i%><%i===1 ? "carta" : "cartas" %></label>
                 <% } %>  
               </div>

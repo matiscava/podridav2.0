@@ -43,5 +43,12 @@
       "0b7428258f72a835b997fdda7037aa56",
       "4907b6e97bf6b796674b08f2ab4beb43"
     ]
+  },
+  {
+    "id": "e25e274fe912f129645b0c6ac98642a9",
+    "handNumber": 0,
+    "timestamp": 1745417085010,
+    "viewName": "setPlayers",
+    "playerList": []
   }
 ]

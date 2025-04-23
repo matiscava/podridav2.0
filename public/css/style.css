@@ -114,7 +114,7 @@ header {
   top: 0;
   width: 100%;
   text-align: center;
-  background-color: var(--menu-color);
+  background-color: var(--body-color);
   box-shadow:  0px -9px 20px 6px var(--second-color);
 }
 
@@ -142,10 +142,12 @@ p{
 }
 
 select {
-  border: none;
-  border-bottom: solid 1px var(--body-color);
+  border: solid 1px var(--body-color);
+  padding: 5px 10px;
   color: var(--body-color);
   transition: .3s;
+  border-radius: 15rem;
+  cursor: pointer;
 }
 
 
@@ -276,7 +278,7 @@ select>option {
   width: inherit;
   font-size: 1.5rem;
   text-decoration: none;
-  color: var(--menu-color);
+  color: var(--body-color);
   transition: all 0.3s ease;
 }
 
@@ -356,7 +358,7 @@ select>option {
 .menu-dropdown>li.nav-li>a:hover,
 .menu-dropdown>li.nav-li li>a:hover,
 .notification-icon:hover {
-  color: var(--third-color);
+  color: var( --body-color);
 }
 
 .nav-menu>ul>li.nav-li>a,
@@ -369,7 +371,7 @@ select>option {
 }
 .nav-menu>ul>li.nav-li>a:hover ,
 .nav-menu>ul>li.nav-li li>a:hover {
-  color: var(--third-color);
+  color: var(--disabled-background-color);
 } 
 
 .nav-menu ul li.nav-li:hover > ul,
@@ -415,6 +417,61 @@ select>option {
   }
 }
 
+/* FIRST PLAYER */
+
+#firstPlayer{
+  margin-top: 1rem;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.color-body{
+  color: #7d3c98;
+}
+
+.input-take-selected {
+  background-color: #6786af3b;
+}
+
+.finalUserList {
+  max-width: max-content;
+  margin: auto;
+}
+
+.finalUserListText {
+  width: fit-content;
+  text-align: left;
+  margin: 0;
+}
+
+.icon-crown {
+  width: 23px;
+  fill: #f0c22d;
+}
+
+.d-none {
+  opacity: 0;
+} 
+
+/* .crowned {
+  font-weight: bold;
+  color: goldenrod;
+  position: relative;
+}
+
+.crowned::before {
+  content: "👑 ";
+  position: absolute;
+  display: block;
+  left: -25px;
+} */
+
+.crown-icon {
+  margin-left: 8px;
+  font-size: 1.2em;
+}
 
 /* FORM CARD */
 .formCards {
@@ -689,6 +746,7 @@ table th{
   margin-bottom: 0.3rem;
   display: flex;
   flex-direction: row;
+  font-weight: 700;
   width: 100%;
   align-items: center;
 }
@@ -999,6 +1057,14 @@ input[type=button],
   font-size: .8rem;
 }
 
+a.button-submit {
+  margin-top: 1rem;
+  display: inline-block;
+  text-decoration: none;
+}
+
+
+
 .mistake-button {
   background-color: var(--error-color);
   text-decoration: none;
@@ -1058,7 +1124,7 @@ input[type=button]:disabled:hover,.button-submit:disabled:hover {
 .playerScoreContainer {
   background-color: var(--second-modal-color);
   width: max-content;
-  padding: 0rem 3rem 0rem 1rem;
+  padding: 0rem 2rem 0rem 1rem;
   font-weight: 600;
   display: flex;
   align-items: center;

@@ -137,17 +137,18 @@ gameController.getHand = async (req, res) => {
   try {
     const game = await gameDao.getGameById(req.params.id);
     const handNumber = parseInt(req.query.handNumber) || parseInt(game.handNumber);
+    if(handNumber == 22) {
+      res.redirect(`/game/${req.body.gameId}`);
+    }
     const playersIdList = game.playerList;
     const players = await playerDao.getPlayersByGameIdAndHandNumber(req.params.id, handNumber);
-
 
     const playerListSortedByPoints = sortPlayersByPoints(await handDao.getPointsByIdPlayerList( playersIdList ),await mistakeMadeDao.getPointsByIdPlayerList( playersIdList ) ,players)
 
     const playerListSortedByHandNumber = sortPlayersByHandNumber(players,handNumber);
-
     const cardLimit = getCardQuantity(handNumber);    
 
-    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: playerListSortedByHandNumber,playerScore: playerListSortedByPoints, handNumber,cardLimit});
+    res.render(path.join(process.cwd(),'/views/hand.ejs'), {title: `Mano N° ${handNumber}`,gameId: req.params.id, playerList: playerListSortedByHandNumber,playerScore: playerListSortedByPoints, handNumber,cardLimit,showCrown: game.showCrown, firstPlayerId: game.FirstPlayerId});
   } catch (err) {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
@@ -179,7 +180,11 @@ gameController.hand = async (req,res) => {
     await handDao.createUpdateHand(handList); 
     const newPlayerPoints = await handDao.getPointsByIdPlayerList( game.playerList );
     await playerDao.updatePoints(newPlayerPoints);
-  
+    var firstPlayer = newPlayerPoints.sort((a, b) => b.score - a.score)[0];
+    if(game.FirstPlayerId != firstPlayer.playerId) {
+      game.FirstPlayerId = firstPlayer.playerId;
+      game.showCrown = false;
+    }
     game.handNumber == handNumber && game.handNumber++;
     game.viewName = game.handNumber === 22 ? "endGame" : "hand";
     await gameDao.save(game);
@@ -191,7 +196,22 @@ gameController.hand = async (req,res) => {
   }
 }
 
-gameController.getEndGame = (req,res) => res.redirect(`/game/${req.params.id}/tablePoints`);
+gameController.getEndGame = async (req,res) => {
+
+  try {
+    const game = await gameDao.getGameById(req.params.id);
+    const handNumber = parseInt(req.query.handNumber) || parseInt(game.handNumber);
+    const playersIdList = game.playerList;
+    const players = await playerDao.getPlayersByGameIdAndHandNumber(req.params.id, handNumber);
+    const playerListSortedByPoints = sortPlayersByPoints(await handDao.getPointsByIdPlayerList( playersIdList ),await mistakeMadeDao.getPointsByIdPlayerList( playersIdList ) ,players)
+    res.render(path.join(process.cwd(),'/views/finalHand.ejs'), {title: `Felicitaciones ${playerListSortedByPoints[0].name}!!`,gameId: req.params.id, playerScore: playerListSortedByPoints});
+
+  } catch (err) {
+    const message = err.message || "Ocurrio un error";
+    console.error(`Error 44 ${err.status}: ${message}`);
+    res.json({status: err.status,message});
+  }
+};
 
 gameController.getTablePoints = async (req,res) => {
   try {
@@ -351,6 +371,21 @@ gameController.deleteGame = async ( req, res ) => {
     const message = err.message || "Ocurrio un error";
     console.error(`Error ${err.status}: ${message}`);
     res.json({status: err.status,message});
+  }
+}
+
+gameController.setCrown =  async ( req, res ) => {
+  const playerId = parseInt(req.body.playerId);
+  const gameId = parseInt(req.body.gameId);
+  const showCrown = req.body.showCrown;
+  try {    
+    const player = await playerDao.getById(playerId);
+    await gameDao.setFirstPlayerId(gameId, player.id);
+    await gameDao.setShowCrown(gameId, showCrown); 
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al actualizar la corona' });
   }
 }
 

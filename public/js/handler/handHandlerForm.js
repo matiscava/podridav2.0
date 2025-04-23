@@ -97,6 +97,7 @@ export default function handHandlerForm () {
 
 $inputsRadioTake.forEach($radio => {
   if ($radio.checked) taken += parseInt($radio.value);
+  
   $radio.addEventListener('change', () => {
     taken = 0;
     for (let i = 0; i < $inputsRadioTake.length; i++) {
@@ -112,9 +113,21 @@ $inputsRadioTake.forEach($radio => {
     for (let i = 0; i< $inputsRadioRequest.length; i++) {
       if($inputsRadioRequest[i].checked) {
         let playerTextIndex = Math.floor(i/(cardLimit+1));
-        $playerTakenLabel[playerTextIndex].innerHTML = `${$playerTakenLabel[playerTextIndex].getAttribute('data-name')} pidió ${$inputsRadioRequest[i].value}, se llevó:`
+        $playerTakenLabel[playerTextIndex].setAttribute('data-taken',`${$inputsRadioRequest[i].value}`)
+        $playerTakenLabel[playerTextIndex].innerHTML = `<span class="text-bold">${$playerTakenLabel[playerTextIndex].getAttribute('data-name')}</span> pidió <span class="text-bold color-body">${$inputsRadioRequest[i].value}</span>, se llevó:`
+        const $inputRadio = d.querySelectorAll(`input.inputTake[data-player="${$playerTakenLabel[playerTextIndex].getAttribute('data-name')}"]`);
+        $inputRadio.forEach( $i => {
+          var $label = d.querySelector(`label[for="${$i.id}"]`)
+          if($i.value == $inputsRadioRequest[i].value)
+          {
+            $label.classList.add('input-take-selected')
+          } else {
+            $label.classList.remove('input-take-selected')
+          }
+        })
       }
     }
+
   }
 
   const setTable = () => {

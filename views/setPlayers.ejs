@@ -1,8 +1,8 @@
 <%- include('./components/head.ejs') %> 
-<main>
+<main class="marginTop60px">
   <div class="container containerHand">
     <h2><%= title %></h2>
-    <form action="/game/setPlayers" method="post" class="form-input-text">
+    <form action="/game/setPlayers" method="post" id="formSetPlayers" class="form-input-text">
       <div class="label-container"><label for="player1">Jugador 1:</label><input type="text" name="[players][0][name]" id="player1" required></div>
       <div class="label-container"><label for="player2">Jugador 2:</label><input type="text" name="[players][1][name]" id="player2" required></div>
       <div class="label-container"><label for="player3">Jugador 3:</label><input type="text" name="[players][2][name]" id="player3" required></div>
@@ -17,4 +17,5 @@
     </form>
   </div>
 </main>
+<%- include('./components/loader.ejs') %>
 <%- include('./components/footer.ejs')  %> 

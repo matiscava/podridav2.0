@@ -5,13 +5,16 @@
     <form action="/game/setFirstPlayer" method="post">
       <div class="label-container">
         <label for="firstPlayer">Seleccione el primer jugador que será mano:</label>
+        <br />
         <select name="playerId" id="firstPlayer">
           <% playerList.forEach( p => { %>
             <option value="<%= p.id %>"><%= p.name %></option>
           <% }); %>
         </select>
       </div>
+      <p id="selected-player" style="margin-top: 10px; font-weight: bold;"></p>
       <input type="hidden" name="gameId" value="<%= gameId %>">
+      <button class="menu-button" type="button" id="btn-shuffle">Elegir Aleatorio</button>
       <input type="submit" class="menu-button" value="Iniciar Juego">
     </form>
   </div>
